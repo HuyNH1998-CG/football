@@ -12,6 +12,7 @@ public class Coach {
     private String hometown;
     private long salary;
     private long bonus;
+    @Column(nullable = true)
     private long weeklySalary = salary + bonus;
     @Column(unique = true)
     private String email;

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a th:href="@{/logout}" sec:authorize="isAuthenticated()"> Logout</a>
+<h1 th:text="${coach.id}"></h1>
+<h1 th:text="${coach.name}"></h1>
+<h1 th:text="${coach.hometown}"></h1>
+<h1 th:text="${coach.salary}"></h1>
+<h1 th:text="${coach.email}"></h1>
+<h1 th:text="${coach.age}"></h1>
+<h1 th:text="${coach.weeklySalary}"></h1>
+<h1 th:text="${coach.bonus}"></h1>
+</body>
+</html>

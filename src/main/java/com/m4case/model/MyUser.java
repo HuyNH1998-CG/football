@@ -1,6 +1,8 @@
 package com.m4case.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
 @Entity
 public class MyUser {
@@ -8,7 +10,9 @@ public class MyUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
+    @Email(message = "Must be correctly input email")
     private String email;
+    @Size(min = 6, max = 8, message = "Password between 6-8 character")
     private String password;
 
     @ManyToOne

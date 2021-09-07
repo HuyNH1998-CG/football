@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/createUser}" th:object="${myUser}" method="post">
+    <input type="text" th:field="*{email}">
+    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+    <input type="password" th:field="*{password}">
+    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+    <select th:field="*{role}">
+        <option th:each="role:${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+    </select>
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
