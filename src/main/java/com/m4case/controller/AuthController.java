@@ -11,15 +11,18 @@ import com.m4case.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.File;
 
 @Controller
 public class AuthController {
@@ -61,6 +64,14 @@ public class AuthController {
         return modelAndView;
     }
 
+    @GetMapping("player")
+    public ModelAndView player(Authentication authentication){
+        String email = authentication.getName();
+        Player player = playerService.findByEmail(email);
+        ModelAndView modelAndView = new ModelAndView("/testPlayer");
+        modelAndView.addObject("player", player);
+        return modelAndView;
+    }
     @GetMapping("/createUser")
     public ModelAndView showCreate(){
         ModelAndView modelAndView = new ModelAndView("/createUser");
@@ -105,6 +116,20 @@ public class AuthController {
         coachService.save(coach);
         ModelAndView modelAndView = new ModelAndView("/landing");
         modelAndView.addObject("message", "Created");
+        return modelAndView;
+    }
+
+    @PostMapping("/createPlayer")
+    public ModelAndView createPlayer(@RequestAttribute MultipartFile file,@ModelAttribute("player") Player player){
+        String fileName = file.getOriginalFilename();
+        try{
+            FileCopyUtils.copy(file.getBytes(),new File("E:\\CodeGym\\M4-Case\\src\\main\\resources\\static\\",fileName));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        player.setAvatar(fileName);
+        playerService.save(player);
+        ModelAndView modelAndView = new ModelAndView("/testPlayer");
         return modelAndView;
     }
 }
