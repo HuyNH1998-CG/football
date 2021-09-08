@@ -10,6 +10,7 @@ public class Coach {
     private String name;
     private String age;
     private String hometown;
+    private String avatar;
     private long salary;
     @ManyToOne
     private WeeklySalary weeklySalary;
