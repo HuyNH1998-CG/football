@@ -111,8 +111,6 @@ public class AuthController {
 
     @PostMapping("/createCoach")
     public ModelAndView createCoach(@ModelAttribute("coach") Coach coach){
-        long weekly = coach.getSalary() + coach.getBonus();
-        coach.setWeeklySalary(weekly);
         coachService.save(coach);
         ModelAndView modelAndView = new ModelAndView("/landing");
         modelAndView.addObject("message", "Created");
