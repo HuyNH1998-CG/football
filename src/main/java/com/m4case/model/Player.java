@@ -20,9 +20,8 @@ public class Player {
     private int weight;
     private int bmi;
     private long salary;
-    private long bonus;
-    private int playHours;
-    private long weeklySalary;
+    @ManyToOne
+    private WeeklySalary weeklySalary;
     private String avatar;
     private String status;
     @Column(unique = true)
@@ -31,7 +30,7 @@ public class Player {
     public Player() {
     }
 
-    public Player(long id, String name, Date birthday, String hometown, String position, String hype, int height, int weight, int bmi, long salary, long bonus, int playHours, long weeklySalary, String avatar, String status, String email) {
+    public Player(long id, String name, Date birthday, String hometown, String position, String hype, int height, int weight, int bmi, long salary, WeeklySalary weeklySalary, String avatar, String status, String email) {
         this.id = id;
         this.name = name;
         this.birthday = birthday;
@@ -42,8 +41,6 @@ public class Player {
         this.weight = weight;
         this.bmi = bmi;
         this.salary = salary;
-        this.bonus = bonus;
-        this.playHours = playHours;
         this.weeklySalary = weeklySalary;
         this.avatar = avatar;
         this.status = status;
@@ -130,27 +127,11 @@ public class Player {
         this.salary = salary;
     }
 
-    public long getBonus() {
-        return bonus;
-    }
-
-    public void setBonus(long bonus) {
-        this.bonus = bonus;
-    }
-
-    public int getPlayHours() {
-        return playHours;
-    }
-
-    public void setPlayHours(int playHours) {
-        this.playHours = playHours;
-    }
-
-    public long getWeeklySalary() {
+    public WeeklySalary getWeeklySalary() {
         return weeklySalary;
     }
 
-    public void setWeeklySalary(long weeklySalary) {
+    public void setWeeklySalary(WeeklySalary weeklySalary) {
         this.weeklySalary = weeklySalary;
     }
 

@@ -11,22 +11,20 @@ public class Coach {
     private String age;
     private String hometown;
     private long salary;
-    private long bonus;
-    @Column(nullable = true)
-    private long weeklySalary = salary + bonus;
+    @ManyToOne
+    private WeeklySalary weeklySalary;
     @Column(unique = true)
     private String email;
 
     public Coach() {
     }
 
-    public Coach(long id, String name, String age, String hometown, long salary, long bonus, long weeklySalary, String email) {
+    public Coach(long id, String name, String age, String hometown, long salary, WeeklySalary weeklySalary, String email) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.hometown = hometown;
         this.salary = salary;
-        this.bonus = bonus;
         this.weeklySalary = weeklySalary;
         this.email = email;
     }
@@ -71,19 +69,11 @@ public class Coach {
         this.salary = salary;
     }
 
-    public long getBonus() {
-        return bonus;
-    }
-
-    public void setBonus(long bonus) {
-        this.bonus = bonus;
-    }
-
-    public long getWeeklySalary() {
+    public WeeklySalary getWeeklySalary() {
         return weeklySalary;
     }
 
-    public void setWeeklySalary(long weeklySalary) {
+    public void setWeeklySalary(WeeklySalary weeklySalary) {
         this.weeklySalary = weeklySalary;
     }
 
