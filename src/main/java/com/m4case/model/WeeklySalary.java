@@ -11,8 +11,6 @@ public class WeeklySalary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private Coach coach;
-    @ManyToOne
     private Player player;
 
     private long totalSalary;
@@ -23,9 +21,8 @@ public class WeeklySalary {
     public WeeklySalary() {
     }
 
-    public WeeklySalary(Long id, Coach coach, Player player, long totalSalary, Date date) {
+    public WeeklySalary(Long id, Player player, long totalSalary, Date date) {
         this.id = id;
-        this.coach = coach;
         this.player = player;
         this.totalSalary = totalSalary;
         this.date = date;
@@ -37,14 +34,6 @@ public class WeeklySalary {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Coach getCoach() {
-        return coach;
-    }
-
-    public void setCoach(Coach coach) {
-        this.coach = coach;
     }
 
     public Player getPlayer() {

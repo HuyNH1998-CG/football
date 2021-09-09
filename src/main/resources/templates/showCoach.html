@@ -12,36 +12,37 @@
 <body>
 
 <div class="container">
-    <h2>Create new Coach Table</h2>
-    <th:block th:if="${message}">
-        <p th:text="${message}"></p>
-    </th:block>
-    <form action="/coach/create" method="post">
+    <h2>Coach Table</h2>
     <table class="table">
         <thead>
         <tr>
+            <th>Id</th>
             <th>Name</th>
             <th>Age</th>
             <th>HomeTown</th>
             <th>Salary</th>
             <th>WeekSalary</th>
             <th>Email</th>
+            <th>Create</th>
+            <th>Update</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:object="${coach}" >
-            <td><input th:field="*{name}"></td>
-            <td><input th:field="*{age}"></td>
-            <td><input th:field="*{hometown}"></td>
-            <td><input th:field="*{salary}"></td>
-            <td><input th:field="*{weeklySalary.totalSalary}"></td>
-            <td><input th:field="*{email}"></td>
+        <tr th:each="coach:${listcoach}">
+            <td th:text="${coach.id}"></td>
+            <td th:text="${coach.name}"></td>
+            <td th:text="${coach.age}"></td>
+            <td th:text="${coach.hometown}"></td>
+            <td th:text="${coach.salary}"></td>
+            <td th:text="${coach.weeklySalary.totalSalary}"></td>
+            <td th:text="${coach.email}"></td>
+            <td><a href="/coach/create" type="button" class="btn btn-default">Create</a></td>
+            <td><a th:href="@{/coach/edit/{id}(id=${coach.id})}" type="button" class="btn btn-default">Update</a></td>
+            <td><a th:href="@{/coach/delete/{id}(id=${coach.id})}" type="button" class="btn btn-default">Delete</a></td>
         </tr>
-
         </tbody>
     </table>
-        <button type="submit" class="btn btn-default">Create</button>
-    </form>
 </div>
 
 </body>

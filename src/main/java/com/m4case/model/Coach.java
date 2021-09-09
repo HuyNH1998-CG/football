@@ -11,7 +11,7 @@ public class Coach {
     private String age;
     private String hometown;
     private long salary;
-    @ManyToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private WeeklySalary weeklySalary;
     @Column(unique = true)
     private String email;
