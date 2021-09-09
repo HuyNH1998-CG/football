@@ -12,8 +12,7 @@ public class Coach {
     private String hometown;
     private String avatar;
     private long salary;
-
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private WeeklySalary weeklySalary;
 
     @Column(unique = true)
