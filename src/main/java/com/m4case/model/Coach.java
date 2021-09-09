@@ -12,8 +12,10 @@ public class Coach {
     private String hometown;
     private String avatar;
     private long salary;
+
     @ManyToOne
     private WeeklySalary weeklySalary;
+
     @Column(unique = true)
     private String email;
 

@@ -40,6 +40,7 @@ public class AuthController {
 
     @Autowired
     private EmailValidator emailValidator;
+
     @GetMapping("/")
     public ModelAndView landing() {
         return new ModelAndView("/landing");
@@ -65,52 +66,54 @@ public class AuthController {
     }
 
     @GetMapping("player")
-    public ModelAndView player(Authentication authentication){
+    public ModelAndView player(Authentication authentication) {
         String email = authentication.getName();
         Player player = playerService.findByEmail(email);
         ModelAndView modelAndView = new ModelAndView("/testPlayer");
         modelAndView.addObject("player", player);
         return modelAndView;
     }
+
     @GetMapping("/createUser")
-    public ModelAndView showCreate(){
+    public ModelAndView showCreate() {
         ModelAndView modelAndView = new ModelAndView("/createUser");
         modelAndView.addObject("myUser", new MyUser());
-        modelAndView.addObject("roles",roleService.findAll());
+        modelAndView.addObject("roles", roleService.findAll());
         return modelAndView;
     }
+
     @PostMapping("/createUser")
-    public ModelAndView create(@Valid @ModelAttribute("myUser") MyUser myUser, BindingResult bindingResult){
+    public ModelAndView create(@Valid @ModelAttribute("myUser") MyUser myUser, BindingResult bindingResult) {
         String role = myUser.getRole().getName();
-        emailValidator.validate(myUser,bindingResult);
-        if(bindingResult.hasFieldErrors()){
+        emailValidator.validate(myUser, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
             ModelAndView modelAndView = new ModelAndView("/createUser");
             modelAndView.addObject("myUser", myUser);
-            modelAndView.addObject("roles",roleService.findAll());
+            modelAndView.addObject("roles", roleService.findAll());
             return modelAndView;
         }
-        if(role.equals("ROLE_ADMIN")){
+        if (role.equals("ROLE_ADMIN")) {
             userService.save(myUser);
             ModelAndView modelAndView = new ModelAndView("/landing");
             modelAndView.addObject("message", "AdminCreated");
             return modelAndView;
-        } else if (role.equals("ROLE_COACH")){
+        } else if (role.equals("ROLE_COACH")) {
             ModelAndView modelAndView = new ModelAndView("/createCoach");
             userService.save(myUser);
-            modelAndView.addObject("coachAccount",myUser);
-            modelAndView.addObject("coach",new Coach());
+            modelAndView.addObject("coachAccount", myUser);
+            modelAndView.addObject("coach", new Coach());
             return modelAndView;
         } else {
             ModelAndView modelAndView = new ModelAndView("/createPlayer");
             userService.save(myUser);
-            modelAndView.addObject("playerAccount",myUser);
-            modelAndView.addObject("player",new Player());
+            modelAndView.addObject("playerAccount", myUser);
+            modelAndView.addObject("player", new Player());
             return modelAndView;
         }
     }
 
     @PostMapping("/createCoach")
-    public ModelAndView createCoach(@ModelAttribute("coach") Coach coach){
+    public ModelAndView createCoach(@ModelAttribute("coach") Coach coach) {
         coachService.save(coach);
         ModelAndView modelAndView = new ModelAndView("/landing");
         modelAndView.addObject("message", "Created");
@@ -118,11 +121,11 @@ public class AuthController {
     }
 
     @PostMapping("/createPlayer")
-    public ModelAndView createPlayer(@RequestAttribute MultipartFile file,@ModelAttribute("player") Player player){
+    public ModelAndView createPlayer(@RequestAttribute MultipartFile file, @ModelAttribute("player") Player player) {
         String fileName = file.getOriginalFilename();
-        try{
-            FileCopyUtils.copy(file.getBytes(),new File("E:\\CodeGym\\M4-Case\\src\\main\\resources\\static\\",fileName));
-        } catch (Exception e){
+        try {
+            FileCopyUtils.copy(file.getBytes(), new File("E:\\CodeGym\\M4-Case\\src\\main\\resources\\static\\", fileName));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         player.setAvatar(fileName);

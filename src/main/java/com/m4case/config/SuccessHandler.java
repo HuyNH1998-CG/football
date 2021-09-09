@@ -15,12 +15,13 @@ import java.util.List;
 
 public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String url = "";
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> roles = new ArrayList<>();
-        for(GrantedAuthority grantedAuthority : authorities){
+        for (GrantedAuthority grantedAuthority : authorities) {
             roles.add(grantedAuthority.getAuthority());
         }
         String role = roles.get(0);
@@ -28,12 +29,11 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
             url = "/admin";
         } else if (role.equals("ROLE_COACH")) {
             url = "/coach";
-        } else if (role.equals("ROLE_PLAYER")){
+        } else if (role.equals("ROLE_PLAYER")) {
             url = "/player";
         } else {
             url = "/error";
         }
-
-        redirectStrategy.sendRedirect(request,response,url);
+        redirectStrategy.sendRedirect(request, response, url);
     }
 }

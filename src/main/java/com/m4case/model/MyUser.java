@@ -9,9 +9,11 @@ public class MyUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true)
     @Email(message = "Must be correctly input email")
     private String email;
+
     @Size(min = 6, max = 8, message = "Password between 6-8 character")
     private String password;
 

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div align="center">
+  <h1>Detail Player</h1>
+    <p>
+        <a href="/players/list">Come back home</a>
+    </p>
+    <div th:if="${message}">
+        <p th:text="${message}"></p>
+    </div>
+  <table border="1" th:object="${player}">
+          <tr>
+              <th>Name</th>
+              <th>Avatar</th>
+              <th>Email</th>
+              <th>Birthday</th>
+              <th>Address</th>
+              <th>Height</th>
+              <th>Weight</th>
+              <th>BMI</th>
+              <th>Salary</th>
+              <th>Position</th>
+              <th>Hype</th>
+              <th>WeeklySalary</th>
+              <th>Status</th>
+              <th>Edit</th>
+              <th>Delete</th>
+          </tr>
+          <tr>
+              <td th:hidden="*{id}"></td>
+              <td th:text="*{name}"></td>
+              <td th:text="*{avatar}"></td>
+              <td th:text="*{email}"></td>
+              <td th:text="*{birthday}"></td>
+              <td th:text="*{hometown}"></td>
+              <td th:text="*{height}"></td>
+              <td th:text="*{weight}"></td>
+              <td th:text="*{bmi}"></td>
+              <td th:text="*{salary}"></td>
+              <td th:text="*{position}"></td>
+              <td th:text="*{hype}"></td>
+              <td th:text="*{weeklySalary.getTotalSalary()}"></td>
+              <td th:text="*{status}"></td>
+              <td>
+                  <a th:href="@{/edit-player/__${player.id}__}">Edit</a>
+              </td>
+              <td>
+                  <a th:href="@{/delete-player/__${player.id}__}">Delete</a>
+              </td>
+  </table>
+</div>
+</body>
+</html>
