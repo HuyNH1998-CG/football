@@ -21,7 +21,8 @@ public class AppConfig implements WebMvcConfigurer {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
             "classpath:/resources/static",
-            "classpath:/static/"};
+            "classpath:/static/"
+    };
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

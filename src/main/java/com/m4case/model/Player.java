@@ -20,10 +20,13 @@ public class Player {
     private int weight;
     private int bmi;
     private long salary;
+
     @ManyToOne
     private WeeklySalary weeklySalary;
+
     private String avatar;
     private String status;
+
     @Column(unique = true)
     private String email;
 
