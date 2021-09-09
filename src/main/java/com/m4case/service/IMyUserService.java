@@ -4,4 +4,5 @@ import com.m4case.model.MyUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface IMyUserService extends IGeneralService<MyUser>, UserDetailsService {
+    MyUser findByEmail(String email);
 }

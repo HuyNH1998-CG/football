@@ -7,6 +7,7 @@ public interface IGeneralService<T> {
 
     Optional<T> findById(Long id);
 
+    Object saveObj(T t);
     void save(T t);
 
     void delete(Long id);

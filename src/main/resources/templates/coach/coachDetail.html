@@ -15,17 +15,21 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Coach Info</h4>
+                        <h4 class="card-title">Coach Detail</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table mb-6" th:object="${coach}">
                                 <tr>
                                     <td>
+                                        <a th:href="@{/changeCoachAvatar/{id}(id=${coach.id})}" class="btn btn-primary">
+                                            Change Avatar</a>
                                     </td>
                                     <td>
                                         <div class="round-img">
-                                            <a href=""><img width="200" th:src="@{'/'+${coach.avatar}}" alt=""></a>
+                                            <a th:href="@{/changeCoachAvatar/{id}(id=${coach.id})}"><img width="300"
+                                                                                                         th:src="@{'/'+${coach.avatar}}"
+                                                                                                         alt=""></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -36,7 +40,8 @@
                                 <tr>
                                     <th>Name</th>
                                     <td th:text="${coach.name}"></td>
-                                </tr>                                <tr>
+                                </tr>
+                                <tr>
                                     <th>Age</th>
                                     <td th:text="${coach.age}"></td>
                                 </tr>
@@ -50,7 +55,10 @@
                                 </tr>
                                 <tr>
                                     <th>Weekly Salary</th>
-                                    <td th:text="${coach.weeklySalary.totalSalary}"></td>
+                                    <td th:switch="${coach.weeklySalary!=null}">
+                                        <span th:case="${true}" th:text="${coach.weeklySalary.totalSalary}"></span>
+                                        <span th:case="*">0</span>
+                                    </td>
                                 </tr>
                             </table>
                         </div>

@@ -1,5 +1,6 @@
 package com.m4case.model;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class WeeklySalary {
 
     private long totalSalary;
 
-    @CreatedDate
+    @CreationTimestamp
     private Date date;
 
     public WeeklySalary() {

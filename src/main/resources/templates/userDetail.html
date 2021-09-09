@@ -5,7 +5,6 @@
   <title>Title</title>
 </head>
 <body>
-
 <div th:replace="home :: preload"></div>
 <div id="main-wrapper" class="show">
   <div th:replace="home :: nav-head"></div>
@@ -16,50 +15,37 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title">Confirm Delete</h4>
-            <h1 class="card-title">Are you sure you want to detele this Coach</h1>
+            <h4 class="card-title">Coach Detail</h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table mb-6" th:object="${coach}">
+              <table class="table mb-6" th:object="${user}">
                 <tr>
                   <td>
                   </td>
                   <td>
                     <div class="round-img">
-                      <a href=""><img width="200" th:src="@{'/'+${coach.avatar}}" alt=""></a>
+                      <a href=""><img width="200" th:src="@{'/'+${user.avatar}}" alt=""></a>
                     </div>
                   </td>
                 </tr>
                 <tr>
                   <th>Email</th>
-                  <td th:text="${coach.email}"></td>
+                  <td th:text="${user.email}"></td>
                 </tr>
                 <tr>
                   <th>Name</th>
-                  <td th:text="${coach.name}"></td>
-                </tr>                                <tr>
-                <th>Age</th>
-                <td th:text="${coach.age}"></td>
-              </tr>
-                <tr>
-                  <th>HomeTown</th>
-                  <td th:text="${coach.hometown}"></td>
+                  <td th:text="${user.name}"></td>
                 </tr>
                 <tr>
-                  <th>Salary</th>
-                  <td th:text="${coach.salary}"></td>
+                  <th>Age</th>
+                  <td th:text="${user.age}"></td>
                 </tr>
                 <tr>
-                  <th>Weekly Salary</th>
-                  <td th:text="${coach.weeklySalary.totalSalary}"></td>
+                  <th>Gender</th>
+                  <td th:text="${user.gender}"></td>
                 </tr>
               </table>
-              <form  method="post">
-                <input hidden th:value="${coach.id}">
-                <button type="submit" class="btn btn-danger">Delete</button>
-                <a href="/showCoach" class="btn btn-primary">Cancel</a>
-              </form>
             </div>
           </div>
         </div>

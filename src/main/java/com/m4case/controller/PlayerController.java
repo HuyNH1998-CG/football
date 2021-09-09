@@ -1,9 +1,14 @@
 package com.m4case.controller;
 
+import com.m4case.model.Coach;
 import com.m4case.model.Player;
-import com.m4case.service.*;
+import com.m4case.service.ICoachService;
+import com.m4case.service.IMyUserService;
+import com.m4case.service.IPlayerService;
+import com.m4case.service.IRoleService;
 import com.m4case.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PlayerController {
@@ -29,10 +34,10 @@ public class PlayerController {
     IPlayerService playerService;
 
     @Autowired
-    IWeeklySalaryService weeklySalaryService;
-
-    @Autowired
     private EmailValidator emailValidator;
+
+    @Value("${uploadPart}")
+    String uploadPart;
 
 
     @GetMapping("/list")
@@ -42,35 +47,19 @@ public class PlayerController {
         return modelAndView;
     }
 
-//    @GetMapping("/create-player")
-//    public ModelAndView showFormCreate() {
-//        ModelAndView modelAndView = new ModelAndView("/players/create");
-//        modelAndView.addObject("player", new Player());
-//        return modelAndView;
-//    }
-
     @PostMapping("/createPlayer")
     public ModelAndView createPlayer(@RequestAttribute MultipartFile file, @ModelAttribute("player") Player player) throws IOException {
         String fileName = file.getOriginalFilename();
-        FileCopyUtils.copy(file.getBytes(), new File("E:\\CodeGym\\M4-Case\\src\\main\\resources\\static\\", fileName));
+        FileCopyUtils.copy(file.getBytes(), new File(uploadPart, fileName));
         player.setAvatar(fileName);
-        int bmi = player.getWeight() / (player.getHeight()/100*2);
+        int bmi = player.getWeight() / (player.getHeight() / 100 * 2);
         player.setBmi(bmi);
         player.setStatus("Playing");
-        playerService.save(player);
-        return new ModelAndView("/home");
+        player = (Player) playerService.saveObj(player);
+        return new ModelAndView("redirect:/playerProfile/" + player.getId());
     }
 
-//    @PostMapping("/create-player")
-//    public ModelAndView createPlayer(@ModelAttribute("player") Player player) {
-//        playerService.save(player);
-//        ModelAndView modelAndView = new ModelAndView("/players/create");
-//        modelAndView.addObject("player", new Player());
-//        modelAndView.addObject("message", "Create new Player successfully !");
-//        return modelAndView;
-//    }
-
-    @GetMapping("/detail-player/{id}")
+    @GetMapping("/playerProfile/{id}")
     public ModelAndView detail(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("/players/detail");
         modelAndView.addObject("player", playerService.findById(id).get());
@@ -83,5 +72,28 @@ public class PlayerController {
         modelAndView.addObject("player", playerService.findById(id));
         modelAndView.addObject("message", "Are you sure ???");
         return modelAndView;
+    }
+
+    @GetMapping("/changePlayerAvatar/{id}")
+    public ModelAndView showChangeCoachAvatar(@PathVariable long id) {
+        Optional<Player> coach = playerService.findById(id);
+        if (coach.isPresent()) {
+            ModelAndView modelAndView = new ModelAndView("/players/changePlayerAvatar");
+            modelAndView.addObject("player", coach.get());
+            return modelAndView;
+        } else {
+            ModelAndView modelAndView = new ModelAndView("/error.404");
+            return modelAndView;
+        }
+    }
+
+    @PostMapping("/changePlayerAvatar")
+    public ModelAndView changeCoachAvatar(@RequestAttribute MultipartFile file, @ModelAttribute("coach") Player player) throws IOException {
+        player = playerService.findById(player.getId()).get();
+        String fileName = file.getOriginalFilename();
+        FileCopyUtils.copy(file.getBytes(), new File(uploadPart, fileName));
+        player.setAvatar(fileName);
+        playerService.save(player);
+        return new ModelAndView("redirect:/playerProfile/" + player.getId());
     }
 }

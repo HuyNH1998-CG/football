@@ -48,7 +48,10 @@
                                 </tr>
                                 <tr>
                                     <th>Weekly Salary</th>
-                                    <td th:text="${player.weeklySalary.totalSalary}"></td>
+                                    <td th:switch="${player.weeklySalary!=null}">
+                                        <span th:case="${true}" th:text="${player.weeklySalary.totalSalary}"></span>
+                                        <span th:case="*">0</span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Position</th>

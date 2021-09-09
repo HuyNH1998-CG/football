@@ -4,6 +4,7 @@ import com.m4case.model.Coach;
 import com.m4case.model.MyUser;
 import com.m4case.model.Player;
 import com.m4case.service.*;
+import com.m4case.validator.EmailChecker;
 import com.m4case.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,13 +37,14 @@ public class AuthController {
     @Autowired
     IPlayerService playerService;
 
-    @Autowired
-    IWeeklySalaryService weeklySalaryService;
+//    @Autowired
+//    IWeeklySalaryService weeklySalaryService;
 
     @Autowired
     private EmailValidator emailValidator;
 
-
+    @Autowired
+    private EmailChecker emailChecker;
 
     @GetMapping("/")
     public ModelAndView landing() {
@@ -50,7 +52,14 @@ public class AuthController {
     }
 
     @GetMapping("/home")
-    public ModelAndView home(@RequestParam Optional<String> min, @RequestParam Optional<String> max) {
+    public ModelAndView home() {
+        ModelAndView modelAndView = new ModelAndView("/home");
+        modelAndView.addObject("coaches", coachService.findAll());
+        return modelAndView;
+    }
+
+    @PostMapping("/home")
+    public ModelAndView homeSearch(@RequestParam Optional<String> min, @RequestParam Optional<String> max) {
         ModelAndView modelAndView = new ModelAndView("/home");
         if (min.isPresent() && max.isPresent()) {
             if (!min.get().equals("") && !max.get().equals("")) {
@@ -75,54 +84,9 @@ public class AuthController {
         return modelAndView;
     }
 
-    @PostMapping("/home")
-    public ModelAndView homeSearch(@RequestParam Optional<String> min, @RequestParam Optional<String> max) {
-        ModelAndView modelAndView = new ModelAndView("/home");
-        if (min.isPresent() && max.isPresent()) {
-            Long maxSalary = Long.parseLong(max.get());
-            Long minSalary = Long.parseLong(min.get());
-            modelAndView.addObject("players", playerService.findBySalaryBetween(minSalary, maxSalary));
-        } else if (max.isPresent() && !min.isPresent()) {
-            Long maxSalary = Long.parseLong(max.get());
-            modelAndView.addObject("players", playerService.findBySalaryBetween(0L, maxSalary));
-        } else if (min.isPresent() && !max.isPresent()) {
-            Long minSalary = Long.parseLong(min.get());
-            modelAndView.addObject("players", playerService.findAllBySalaryGreaterThanEqual(minSalary));
-        }
-        return modelAndView;
-    }
-
-    @GetMapping("/test")
-    public ModelAndView test() {
-        return new ModelAndView("/test");
-    }
-
     @GetMapping("/login")
     public String login() {
         return "login";
-    }
-
-    @GetMapping("/admin")
-    public ModelAndView admin() {
-        return new ModelAndView("/test");
-    }
-
-    @GetMapping("/coach")
-    public ModelAndView coach(Authentication authentication) {
-        String email = authentication.getName();
-        Coach coach = coachService.findByEmail(email);
-        ModelAndView modelAndView = new ModelAndView("/testCoach");
-        modelAndView.addObject("coach", coach);
-        return modelAndView;
-    }
-
-    @GetMapping("player")
-    public ModelAndView player(Authentication authentication) {
-        String email = authentication.getName();
-        Player player = playerService.findByEmail(email);
-        ModelAndView modelAndView = new ModelAndView("/testPlayer");
-        modelAndView.addObject("player", player);
-        return modelAndView;
     }
 
     @GetMapping("/createUser")
@@ -163,10 +127,31 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/forgotPassword")
+    public ModelAndView showForgotPassword(){
+        ModelAndView modelAndView = new ModelAndView("/forgotPassword");
+        modelAndView.addObject("user",new MyUser());
+        return modelAndView;
+    }
 
-
-    @GetMapping("/error")
-    public String error(){
-        return "/error-404";
+    @PostMapping("/forgotPassword")
+    public ModelAndView forgotPassword(@Valid @ModelAttribute("user") MyUser myUser,BindingResult bindingResult){
+        emailChecker.validate(myUser,bindingResult);
+        if(bindingResult.hasFieldErrors()){
+            ModelAndView modelAndView = new ModelAndView("/forgotPassword");
+            modelAndView.addObject("user",myUser);
+            return modelAndView;
+        } else {
+            ModelAndView modelAndView = new ModelAndView("/showPassword");
+            modelAndView.addObject("user",userService.loadUserByUsername(myUser.getEmail()));
+            return modelAndView;
+        }
+    }
+    @GetMapping("/userProfile/{email}")
+    public ModelAndView userProfile(@PathVariable String email){
+        MyUser myUser = userService.findByEmail(email);
+        ModelAndView modelAndView = new ModelAndView("/userDetail");
+        modelAndView.addObject("user",myUser);
+        return modelAndView;
     }
 }

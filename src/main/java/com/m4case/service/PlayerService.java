@@ -24,6 +24,11 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
+    public Object saveObj(Player player) {
+        return playerRepository.save(player);
+    }
+
+    @Override
     public void save(Player player) {
         playerRepository.save(player);
     }

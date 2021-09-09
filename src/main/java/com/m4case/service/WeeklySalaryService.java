@@ -5,6 +5,7 @@ import com.m4case.repository.IWeeklySalaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.Optional;
 
 @Service
@@ -23,8 +24,26 @@ public class WeeklySalaryService implements IWeeklySalaryService {
     }
 
     @Override
+    public Object saveObj(WeeklySalary weeklySalary) {
+        return weeklySalaryRepository.save(weeklySalary);
+    }
+
+    @Override
     public void save(WeeklySalary weeklySalary) {
         weeklySalaryRepository.save(weeklySalary);
+    }
+    public WeeklySalary saveSalary(WeeklySalary weeklySalary) {
+        return weeklySalaryRepository.save(weeklySalary);
+    }
+
+    @Override
+    public WeeklySalary findByCoach_IdAndDate(Long id, Date date) {
+        return weeklySalaryRepository.findByCoach_IdAndAndDate(id,date);
+    }
+
+    @Override
+    public WeeklySalary findByPlayer_IdAndDate(Long id, Date date) {
+        return weeklySalaryRepository.findByPlayer_IdAndAndDate(id,date);
     }
 
     @Override

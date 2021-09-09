@@ -17,16 +17,25 @@ public class MyUser {
     @Size(min = 6, max = 8, message = "Password between 6-8 character")
     private String password;
 
+    private String name;
+    private String age;
+    private String gender;
+    private String avatar;
+
     @ManyToOne
     private Role role;
 
     public MyUser() {
     }
 
-    public MyUser(Long id, String email, String password, Role role) {
+    public MyUser(Long id, String email, String password, String name, String age, String gender, String avatar, Role role) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.avatar = avatar;
         this.role = role;
     }
 
@@ -60,5 +69,37 @@ public class MyUser {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

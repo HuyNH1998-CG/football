@@ -2,7 +2,6 @@ package com.m4case.controller;
 
 import com.m4case.model.Coach;
 import com.m4case.service.ICoachService;
-import com.m4case.service.IWeeklySalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -20,16 +19,16 @@ public class CoachController {
     @Autowired
     ICoachService iCoachService;
 
-    @Autowired
-    IWeeklySalaryService iWeeklySalaryService;
+//    @Autowired
+//    IWeeklySalaryService iWeeklySalaryService;
 
     @Value("${uploadPart}")
     String uploadPart;
 
-    @GetMapping("/show")
+    @GetMapping("/showCoach")
     public ModelAndView finAll() {
         ModelAndView modelAndView = new ModelAndView("/coach/showCoach");
-        modelAndView.addObject("listcoach", iCoachService.findAll());
+        modelAndView.addObject("coaches", iCoachService.findAll());
         return modelAndView;
     }
 
@@ -40,7 +39,7 @@ public class CoachController {
 //        return modelAndView;
 //    }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/editCoach/{id}")
     public ModelAndView showEdit(@PathVariable long id) {
         Optional<Coach> coach = iCoachService.findById(id);
         if (coach.isPresent()) {
@@ -53,7 +52,7 @@ public class CoachController {
         }
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/deleteCoach/{id}")
     public ModelAndView showDelete(@PathVariable long id) {
         Optional<Coach> coach = iCoachService.findById(id);
         if (coach.isPresent()) {
@@ -69,21 +68,21 @@ public class CoachController {
     @PostMapping("/createCoach")
     public ModelAndView createCoach(@RequestAttribute MultipartFile file, @ModelAttribute("coach") Coach coach) throws IOException {
         String fileName = file.getOriginalFilename();
-        FileCopyUtils.copy(file.getBytes(), new File("E:\\CodeGym\\M4-Case\\src\\main\\resources\\static\\", fileName));
+        FileCopyUtils.copy(file.getBytes(), new File(uploadPart, fileName));
         coach.setAvatar(fileName);
-        iCoachService.save(coach);
-        return new ModelAndView("redirect:/home");
+        coach = (Coach) iCoachService.saveObj(coach);
+        return new ModelAndView("redirect:/coachProfile/" + coach.getId());
     }
 
 
-    @PostMapping("/edit/{id}")
+    @PostMapping("/editCoach/{id}")
     public ModelAndView edit(@ModelAttribute("coach") Coach coach) {
         iCoachService.save(coach);
         return new ModelAndView("redirect:/coachProfile/" + coach.getId());
     }
 
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/deleteCoach/{id}")
     public ModelAndView delete(@ModelAttribute("coach") Coach coach) {
         iCoachService.delete(coach.getId());
         return new ModelAndView("redirect:/coach/show");

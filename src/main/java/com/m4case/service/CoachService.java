@@ -23,6 +23,11 @@ public class CoachService implements ICoachService {
     }
 
     @Override
+    public Object saveObj(Coach coach) {
+        return coachRepository.save(coach);
+    }
+
+    @Override
     public void save(Coach coach) {
         coachRepository.save(coach);
     }

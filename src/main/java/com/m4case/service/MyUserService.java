@@ -29,6 +29,11 @@ public class MyUserService implements IMyUserService {
     }
 
     @Override
+    public Object saveObj(MyUser myUser) {
+        return userRepository.save(myUser);
+    }
+
+    @Override
     public void save(MyUser myUser) {
         userRepository.save(myUser);
     }
@@ -45,5 +50,10 @@ public class MyUserService implements IMyUserService {
         list.add(myUser.getRole());
         User user = new User(myUser.getEmail(), myUser.getPassword(), list);
         return user;
+    }
+
+    @Override
+    public MyUser findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }
