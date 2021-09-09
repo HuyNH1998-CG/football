@@ -13,7 +13,7 @@ public class Coach {
     private String avatar;
     private long salary;
 
-    @ManyToOne
+    @OneToOne
     private WeeklySalary weeklySalary;
 
     @Column(unique = true)

@@ -11,11 +11,10 @@ public class WeeklySalary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @Transient
+    @OneToOne
     private Coach coach;
 
-    @ManyToOne
+    @OneToOne
     private Player player;
 
     private long totalSalary;

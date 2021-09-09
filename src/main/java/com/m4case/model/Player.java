@@ -21,7 +21,7 @@ public class Player {
     private int bmi;
     private long salary;
 
-    @ManyToOne
+    @OneToOne
     private WeeklySalary weeklySalary;
 
     private String avatar;

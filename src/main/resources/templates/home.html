@@ -229,6 +229,7 @@
                     <th>Name</th>
                     <th>BirthDay</th>
                     <th>HomeTown</th>
+                    <th>Salary 2</th>
                     <th>Position</th>
                     <th>Hype</th>
                   </tr>
@@ -243,6 +244,7 @@
                     <td th:text="${player.name}"></td>
                     <td th:text="${player.birthday}"></td>
                     <td th:text="${player.hometown}"></td>
+                    <td th:text="${player.weeklySalary.totalSalary}"></td>
                     <td th:text="${player.position}"></td>
                     <td th:text="${player.hype}"></td>
                   </tr>
@@ -256,11 +258,38 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-header">
-                <h4 class="card-title">Chart</h4>
+                <h4 class="card-title">Coach</h4>
               </div>
               <div class="card-body">
-                <div class="flot-chard" style="padding: 0px; position: relative;">
-
+                <div class="table-responsive">
+                  <table class="table mb-0">
+                    <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Home Town</th>
+                      <th>Salary</th>
+                      <th>Salary 2</th>
+                      <th>Position</th>
+                      <th>Hype</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="coach : ${coaches}">
+                      <td>
+                        <div class="round-img">
+                          <a href=""><img width="200" th:src="@{${coach.avatar}}" alt=""></a>
+                        </div>
+                      </td>
+                      <td th:text="${coach.name}"></td>
+                      <td th:text="${coach.hometown}"></td>
+                      <td th:text="${coach.salary}"></td>
+                      <td th:text="${coach.weeklySalary.totalSalary}"></td>
+                      <td th:text="${coach.email}"></td>
+                      <td th:text="${coach.age}"></td>
+                    </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>

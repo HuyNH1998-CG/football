@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -39,6 +40,7 @@ public class AuthController {
 
     @Autowired
     private EmailValidator emailValidator;
+
     @GetMapping("/")
     public ModelAndView landing() {
         return new ModelAndView("/landing");
@@ -66,6 +68,7 @@ public class AuthController {
         } else {
             modelAndView.addObject("players", playerService.findAll());
         }
+        modelAndView.addObject("coaches", coachService.findAll());
         return modelAndView;
     }
 
@@ -90,6 +93,7 @@ public class AuthController {
     public ModelAndView test() {
         return new ModelAndView("/test");
     }
+
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -148,7 +152,7 @@ public class AuthController {
             modelAndView.addObject("coach", new Coach());
             return modelAndView;
         } else {
-            ModelAndView modelAndView = new ModelAndView("/player/createPlayer");
+            ModelAndView modelAndView = new ModelAndView("/players/createPlayer");
             userService.save(myUser);
             modelAndView.addObject("playerAccount", myUser);
             modelAndView.addObject("player", new Player());
@@ -157,13 +161,9 @@ public class AuthController {
     }
 
     @PostMapping("/createCoach")
-    public ModelAndView createCoach(@RequestAttribute MultipartFile file, @ModelAttribute("coach") Coach coach) {
+    public ModelAndView createCoach(@RequestAttribute MultipartFile file, @ModelAttribute("coach") Coach coach) throws IOException {
         String fileName = file.getOriginalFilename();
-        try {
-            FileCopyUtils.copy(file.getBytes(), new File("E:\\CodeGym\\M4-Case\\src\\main\\resources\\static\\", fileName));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        FileCopyUtils.copy(file.getBytes(), new File("E:\\CodeGym\\M4-Case\\src\\main\\resources\\static\\", fileName));
         coach.setAvatar(fileName);
         coachService.save(coach);
         ModelAndView modelAndView = new ModelAndView("/landing");
@@ -171,17 +171,8 @@ public class AuthController {
         return modelAndView;
     }
 
-    @PostMapping("/createPlayer")
-    public ModelAndView createPlayer(@RequestAttribute MultipartFile file, @ModelAttribute("player") Player player) {
-        String fileName = file.getOriginalFilename();
-        try {
-            FileCopyUtils.copy(file.getBytes(), new File("E:\\CodeGym\\M4-Case\\src\\main\\resources\\static\\", fileName));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        player.setAvatar(fileName);
-        playerService.save(player);
-        ModelAndView modelAndView = new ModelAndView("/landing");
-        return modelAndView;
+    @GetMapping("/error")
+    public String error(){
+        return "/error-404";
     }
 }
