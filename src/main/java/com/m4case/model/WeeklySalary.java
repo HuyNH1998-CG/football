@@ -11,6 +11,7 @@ public class WeeklySalary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @Transient
     private Coach coach;
     @ManyToOne
     private Player player;

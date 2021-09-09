@@ -3,26 +3,22 @@ package com.m4case.controller;
 import com.m4case.model.Coach;
 import com.m4case.model.MyUser;
 import com.m4case.model.Player;
-import com.m4case.service.ICoachService;
-import com.m4case.service.IMyUserService;
-import com.m4case.service.IPlayerService;
-import com.m4case.service.IRoleService;
+import com.m4case.service.*;
 import com.m4case.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.File;
+import java.util.Optional;
 
 @Controller
 public class AuthController {
@@ -39,15 +35,64 @@ public class AuthController {
     IPlayerService playerService;
 
     @Autowired
+    IWeeklySalaryService weeklySalaryService;
+
+    @Autowired
     private EmailValidator emailValidator;
     @GetMapping("/")
     public ModelAndView landing() {
         return new ModelAndView("/landing");
     }
 
+    @GetMapping("/home")
+    public ModelAndView home(@RequestParam Optional<String> min, @RequestParam Optional<String> max) {
+        ModelAndView modelAndView = new ModelAndView("/home");
+        if (min.isPresent() && max.isPresent()) {
+            if (!min.get().equals("") && !max.get().equals("")) {
+                Long salMin = Long.parseLong(min.get());
+                Long salMax = Long.parseLong(max.get());
+                modelAndView.addObject("players", playerService.findBySalaryBetween(salMin, salMax));
+            } else if (!min.get().equals("")) {
+                Long sal = Long.parseLong(min.get());
+                modelAndView.addObject("players", playerService.findAllBySalaryGreaterThanEqual(sal));
+            } else {
+                if (!max.get().equals("")) {
+                    Long sal = Long.parseLong(max.get());
+                    modelAndView.addObject("players", playerService.findBySalaryBetween(0L, sal));
+                } else {
+                    modelAndView.addObject("players", playerService.findAll());
+                }
+            }
+        } else {
+            modelAndView.addObject("players", playerService.findAll());
+        }
+        return modelAndView;
+    }
+
+    @PostMapping("/home")
+    public ModelAndView homeSearch(@RequestParam Optional<String> min, @RequestParam Optional<String> max) {
+        ModelAndView modelAndView = new ModelAndView("/home");
+        if (min.isPresent() && max.isPresent()) {
+            Long maxSalary = Long.parseLong(max.get());
+            Long minSalary = Long.parseLong(min.get());
+            modelAndView.addObject("players", playerService.findBySalaryBetween(minSalary, maxSalary));
+        } else if (max.isPresent() && !min.isPresent()) {
+            Long maxSalary = Long.parseLong(max.get());
+            modelAndView.addObject("players", playerService.findBySalaryBetween(0L, maxSalary));
+        } else if (min.isPresent() && !max.isPresent()) {
+            Long minSalary = Long.parseLong(min.get());
+            modelAndView.addObject("players", playerService.findAllBySalaryGreaterThanEqual(minSalary));
+        }
+        return modelAndView;
+    }
+
     @GetMapping("/test")
     public ModelAndView test() {
         return new ModelAndView("/test");
+    }
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 
     @GetMapping("/admin")
@@ -65,69 +110,77 @@ public class AuthController {
     }
 
     @GetMapping("player")
-    public ModelAndView player(Authentication authentication){
+    public ModelAndView player(Authentication authentication) {
         String email = authentication.getName();
         Player player = playerService.findByEmail(email);
         ModelAndView modelAndView = new ModelAndView("/testPlayer");
         modelAndView.addObject("player", player);
         return modelAndView;
     }
+
     @GetMapping("/createUser")
-    public ModelAndView showCreate(){
+    public ModelAndView showCreate() {
         ModelAndView modelAndView = new ModelAndView("/createUser");
         modelAndView.addObject("myUser", new MyUser());
-        modelAndView.addObject("roles",roleService.findAll());
+        modelAndView.addObject("roles", roleService.findAll());
         return modelAndView;
     }
+
     @PostMapping("/createUser")
-    public ModelAndView create(@Valid @ModelAttribute("myUser") MyUser myUser, BindingResult bindingResult){
+    public ModelAndView create(@Valid @ModelAttribute("myUser") MyUser myUser, BindingResult bindingResult) {
         String role = myUser.getRole().getName();
-        emailValidator.validate(myUser,bindingResult);
-        if(bindingResult.hasFieldErrors()){
+        emailValidator.validate(myUser, bindingResult);
+        if (bindingResult.hasFieldErrors()) {
             ModelAndView modelAndView = new ModelAndView("/createUser");
             modelAndView.addObject("myUser", myUser);
-            modelAndView.addObject("roles",roleService.findAll());
+            modelAndView.addObject("roles", roleService.findAll());
             return modelAndView;
         }
-        if(role.equals("ROLE_ADMIN")){
+        if (role.equals("ROLE_ADMIN")) {
             userService.save(myUser);
             ModelAndView modelAndView = new ModelAndView("/landing");
             modelAndView.addObject("message", "AdminCreated");
             return modelAndView;
-        } else if (role.equals("ROLE_COACH")){
-            ModelAndView modelAndView = new ModelAndView("/createCoach");
+        } else if (role.equals("ROLE_COACH")) {
+            ModelAndView modelAndView = new ModelAndView("/coach/createCoach");
             userService.save(myUser);
-            modelAndView.addObject("coachAccount",myUser);
-            modelAndView.addObject("coach",new Coach());
+            modelAndView.addObject("coachAccount", myUser);
+            modelAndView.addObject("coach", new Coach());
             return modelAndView;
         } else {
-            ModelAndView modelAndView = new ModelAndView("/createPlayer");
+            ModelAndView modelAndView = new ModelAndView("/player/createPlayer");
             userService.save(myUser);
-            modelAndView.addObject("playerAccount",myUser);
-            modelAndView.addObject("player",new Player());
+            modelAndView.addObject("playerAccount", myUser);
+            modelAndView.addObject("player", new Player());
             return modelAndView;
         }
     }
 
     @PostMapping("/createCoach")
-    public ModelAndView createCoach(@ModelAttribute("coach") Coach coach){
+    public ModelAndView createCoach(@RequestAttribute MultipartFile file, @ModelAttribute("coach") Coach coach) {
+        String fileName = file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(), new File("E:\\CodeGym\\M4-Case\\src\\main\\resources\\static\\", fileName));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        coach.setAvatar(fileName);
         coachService.save(coach);
         ModelAndView modelAndView = new ModelAndView("/landing");
-        modelAndView.addObject("message", "Created");
         return modelAndView;
     }
 
     @PostMapping("/createPlayer")
-    public ModelAndView createPlayer(@RequestAttribute MultipartFile file,@ModelAttribute("player") Player player){
+    public ModelAndView createPlayer(@RequestAttribute MultipartFile file, @ModelAttribute("player") Player player) {
         String fileName = file.getOriginalFilename();
-        try{
-            FileCopyUtils.copy(file.getBytes(),new File("E:\\CodeGym\\M4-Case\\src\\main\\resources\\static\\",fileName));
-        } catch (Exception e){
+        try {
+            FileCopyUtils.copy(file.getBytes(), new File("E:\\CodeGym\\M4-Case\\src\\main\\resources\\static\\", fileName));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         player.setAvatar(fileName);
         playerService.save(player);
-        ModelAndView modelAndView = new ModelAndView("/testPlayer");
+        ModelAndView modelAndView = new ModelAndView("/landing");
         return modelAndView;
     }
 }

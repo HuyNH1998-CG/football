@@ -10,4 +10,5 @@ import java.util.List;
 public interface IPlayerRepository extends CrudRepository<Player, Long> {
     Player findByEmail(String email);
     List<Player> findAllBySalaryBetween (Long salary1, Long salary2);
+    List<Player> findAllBySalaryGreaterThanEqual (Long salary);
 }
