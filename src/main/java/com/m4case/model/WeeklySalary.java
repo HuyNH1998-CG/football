@@ -12,6 +12,7 @@ public class WeeklySalary {
     private Long id;
 
     @ManyToOne
+    @Transient
     private Coach coach;
 
     @ManyToOne

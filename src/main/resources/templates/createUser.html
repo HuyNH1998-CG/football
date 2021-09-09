@@ -1,19 +1,83 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
+<head th:replace="home :: links">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{/createUser}" th:object="${myUser}" method="post">
-    <input type="text" th:field="*{email}">
-    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
-    <input type="password" th:field="*{password}">
-    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
-    <select th:field="*{role}">
-        <option th:each="role:${roles}" th:value="${role.id}" th:text="${role.name}"></option>
-    </select>
-    <button type="submit">Submit</button>
+<div th:replace="home :: preload"></div>
+<div id="main-wrapper" class="show">
+    <div th:replace="home :: nav-head"></div>
+    <div th:replace="home :: header"></div>
+    <div th:replace="home :: sidebar"></div>
+    <div class="content-body" style="min-height: 1140px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create User</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="basic-form">
+                            <form th:action="@{/createUser}" th:object="${myUser}" method="post">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" th:field="*{email}">
+                                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Password</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" th:field="*{password}" class="form-control">
+                                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Role:</label>
+                                    <select class="form-control" th:field="*{role}">
+                                        <option th:each="role:${roles}" th:value="${role.id}"
+                                                th:text="${role.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-primary">Create</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="home :: footer"></div>
+</div>
+<!--**********************************
+    Scripts
+***********************************-->
+<!-- Required vendors -->
+<script src="/vendor/global/global.min.js"></script>
+<script src="/js/quixnav-init.js"></script>
+<script src="/js/custom.min.js"></script>
+<!-- Vectormap -->
+<script src="/vendor/raphael/raphael.min.js"></script>
+<script src="/vendor/morris/morris.min.js"></script>
+<script src="/vendor/circle-progress/circle-progress.min.js"></script>
+<script src="/vendor/chart.js/Chart.bundle.min.js"></script>
+<script src="/vendor/gaugeJS/dist/gauge.min.js"></script>
+<!--  flot-chart js -->
+<script src="/vendor/flot/jquery.flot.js"></script>
+<script src="/vendor/flot/jquery.flot.resize.js"></script>
+<!-- Owl Carousel -->
+<script src="/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+<!-- Counter Up -->
+<script src="/vendor/jqvmap/js/jquery.vmap.min.js"></script>
+<script src="/vendor/jqvmap/js/jquery.vmap.usa.js"></script>
+<script src="/vendor/jquery.counterup/jquery.counterup.min.js"></script>
+<script src="/js/dashboard/dashboard-1.js"></script>
 </form>
 </body>
 </html>
