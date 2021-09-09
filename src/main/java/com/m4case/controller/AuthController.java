@@ -6,6 +6,7 @@ import com.m4case.model.Player;
 import com.m4case.service.*;
 import com.m4case.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,8 @@ public class AuthController {
 
     @Autowired
     private EmailValidator emailValidator;
+
+
 
     @GetMapping("/")
     public ModelAndView landing() {
@@ -160,16 +163,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/createCoach")
-    public ModelAndView createCoach(@RequestAttribute MultipartFile file, @ModelAttribute("coach") Coach coach) throws IOException {
-        String fileName = file.getOriginalFilename();
-        FileCopyUtils.copy(file.getBytes(), new File("E:\\CodeGym\\M4-Case\\src\\main\\resources\\static\\", fileName));
-        coach.setAvatar(fileName);
-        coachService.save(coach);
-        ModelAndView modelAndView = new ModelAndView("/landing");
-        modelAndView.addObject("message", "Created");
-        return modelAndView;
-    }
+
 
     @GetMapping("/error")
     public String error(){
