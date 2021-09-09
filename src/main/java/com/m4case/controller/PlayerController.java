@@ -73,7 +73,7 @@ public class PlayerController {
     @GetMapping("/detail-player/{id}")
     public ModelAndView detail(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("/players/detail");
-        modelAndView.addObject("player", playerService.findById(id));
+        modelAndView.addObject("player", playerService.findById(id).get());
         return modelAndView;
     }
 

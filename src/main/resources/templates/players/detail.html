@@ -1,58 +1,109 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="home :: links">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<div align="center">
-  <h1>Detail Player</h1>
-    <p>
-        <a href="/players/list">Come back home</a>
-    </p>
-    <div th:if="${message}">
-        <p th:text="${message}"></p>
+
+<div th:replace="home :: preload"></div>
+<div id="main-wrapper" class="show">
+    <div th:replace="home :: nav-head"></div>
+    <div th:replace="home :: header"></div>
+    <div th:replace="home :: sidebar"></div>
+    <div class="content-body" style="min-height: 1140px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Player Info</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0" th:object="${player}">
+                                <tr>
+                                    <th>
+                                        <div class="round-img">
+                                            <img width="300" th:src="@{${player.avatar}}" alt="">
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <td th:text="${player.name}"></td>
+                                </tr>
+                                <tr>
+                                    <th>BirthDay</th>
+                                    <td th:text="${player.birthday}"></td>
+                                </tr>
+                                <tr>
+                                    <th>HomeTown</th>
+                                    <td th:text="${player.hometown}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Salary</th>
+                                    <td th:text="${player.salary}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Weekly Salary</th>
+                                    <td th:text="${player.weeklySalary.totalSalary}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Position</th>
+                                    <td th:text="${player.position}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Hype</th>
+                                    <td th:text="${player.hype}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td th:text="${player.status}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Height</th>
+                                    <td th:text="${player.height}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Weight</th>
+                                    <td th:text="${player.weight}"></td>
+                                </tr>
+                                <tr>
+                                    <th>BMI</th>
+                                    <td th:text="${player.bmi}"></td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  <table border="1" th:object="${player}">
-          <tr>
-              <th>Name</th>
-              <th>Avatar</th>
-              <th>Email</th>
-              <th>Birthday</th>
-              <th>Address</th>
-              <th>Height</th>
-              <th>Weight</th>
-              <th>BMI</th>
-              <th>Salary</th>
-              <th>Position</th>
-              <th>Hype</th>
-              <th>WeeklySalary</th>
-              <th>Status</th>
-              <th>Edit</th>
-              <th>Delete</th>
-          </tr>
-          <tr>
-              <td th:hidden="*{id}"></td>
-              <td th:text="*{name}"></td>
-              <td th:text="*{avatar}"></td>
-              <td th:text="*{email}"></td>
-              <td th:text="*{birthday}"></td>
-              <td th:text="*{hometown}"></td>
-              <td th:text="*{height}"></td>
-              <td th:text="*{weight}"></td>
-              <td th:text="*{bmi}"></td>
-              <td th:text="*{salary}"></td>
-              <td th:text="*{position}"></td>
-              <td th:text="*{hype}"></td>
-              <td th:text="*{weeklySalary.getTotalSalary()}"></td>
-              <td th:text="*{status}"></td>
-              <td>
-                  <a th:href="@{/edit-player/__${player.id}__}">Edit</a>
-              </td>
-              <td>
-                  <a th:href="@{/delete-player/__${player.id}__}">Delete</a>
-              </td>
-  </table>
+    <div th:replace="home :: footer"></div>
 </div>
+<!--**********************************
+    Scripts
+***********************************-->
+<!-- Required vendors -->
+<script src="/vendor/global/global.min.js"></script>
+<script src="/js/quixnav-init.js"></script>
+<script src="/js/custom.min.js"></script>
+<!-- Vectormap -->
+<script src="/vendor/raphael/raphael.min.js"></script>
+<script src="/vendor/morris/morris.min.js"></script>
+<script src="/vendor/circle-progress/circle-progress.min.js"></script>
+<script src="/vendor/chart.js/Chart.bundle.min.js"></script>
+<script src="/vendor/gaugeJS/dist/gauge.min.js"></script>
+<!--  flot-chart js -->
+<script src="/vendor/flot/jquery.flot.js"></script>
+<script src="/vendor/flot/jquery.flot.resize.js"></script>
+<!-- Owl Carousel -->
+<script src="/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+<!-- Counter Up -->
+<script src="/vendor/jqvmap/js/jquery.vmap.min.js"></script>
+<script src="/vendor/jqvmap/js/jquery.vmap.usa.js"></script>
+<script src="/vendor/jquery.counterup/jquery.counterup.min.js"></script>
+<script src="/js/dashboard/dashboard-1.js"></script>
 </body>
 </html>
