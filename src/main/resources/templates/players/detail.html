@@ -20,13 +20,15 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table mb-0" th:object="${player}">
+                            <table class="table mb-6" th:object="${player}">
                                 <tr>
-                                    <th>
+                                    <td>
+                                    </td>
+                                    <td>
                                         <div class="round-img">
-                                            <img width="300" th:src="@{${player.avatar}}" alt="">
+                                            <a href=""><img width="200" th:src="@{'/'+ ${player.avatar}}" alt=""></a>
                                         </div>
-                                    </th>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Name</th>
@@ -82,6 +84,7 @@
     </div>
     <div th:replace="home :: footer"></div>
 </div>
+
 <!--**********************************
     Scripts
 ***********************************-->
