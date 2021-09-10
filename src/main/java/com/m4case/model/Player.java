@@ -18,7 +18,7 @@ public class Player {
     private String hype;
     private int height;
     private int weight;
-    private int bmi;
+    private float bmi;
     private long salary;
 
     @OneToOne
@@ -33,7 +33,7 @@ public class Player {
     public Player() {
     }
 
-    public Player(long id, String name, Date birthday, String hometown, String position, String hype, int height, int weight, int bmi, long salary, WeeklySalary weeklySalary, String avatar, String status, String email) {
+    public Player(long id, String name, Date birthday, String hometown, String position, String hype, int height, int weight, float bmi, long salary, WeeklySalary weeklySalary, String avatar, String status, String email) {
         this.id = id;
         this.name = name;
         this.birthday = birthday;
@@ -114,11 +114,11 @@ public class Player {
         this.weight = weight;
     }
 
-    public int getBmi() {
+    public float getBmi() {
         return bmi;
     }
 
-    public void setBmi(int bmi) {
+    public void setBmi(float bmi) {
         this.bmi = bmi;
     }
 

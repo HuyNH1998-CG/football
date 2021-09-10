@@ -102,4 +102,5 @@ public class MyUser {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
 }

@@ -3,24 +3,27 @@ package com.m4case.controller;
 import com.m4case.model.Coach;
 import com.m4case.model.MyUser;
 import com.m4case.model.Player;
-import com.m4case.service.*;
+import com.m4case.service.ICoachService;
+import com.m4case.service.IMyUserService;
+import com.m4case.service.IPlayerService;
+import com.m4case.service.IRoleService;
 import com.m4case.validator.EmailChecker;
 import com.m4case.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -37,16 +40,13 @@ public class AuthController {
     @Autowired
     IPlayerService playerService;
 
-//    @Autowired
-//    IWeeklySalaryService weeklySalaryService;
-
     @Autowired
     private EmailValidator emailValidator;
 
     @Autowired
     private EmailChecker emailChecker;
 
-    @GetMapping("/")
+    @GetMapping("/landing")
     public ModelAndView landing() {
         return new ModelAndView("/landing");
     }
@@ -54,6 +54,7 @@ public class AuthController {
     @GetMapping("/home")
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView("/home");
+        modelAndView.addObject("players", playerService.findAll());
         modelAndView.addObject("coaches", coachService.findAll());
         return modelAndView;
     }
@@ -147,11 +148,94 @@ public class AuthController {
             return modelAndView;
         }
     }
-    @GetMapping("/userProfile/{email}")
-    public ModelAndView userProfile(@PathVariable String email){
-        MyUser myUser = userService.findByEmail(email);
+    @GetMapping("/userProfile")
+    public ModelAndView userProfile(Authentication authentication){
+        MyUser myUser = userService.findByEmail(authentication.getName());
         ModelAndView modelAndView = new ModelAndView("/userDetail");
         modelAndView.addObject("user",myUser);
         return modelAndView;
+    }
+
+    @GetMapping("/workProfile")
+    public ModelAndView workProfile(Authentication authentication){
+        Collection<? extends GrantedAuthority> roles = authentication.getAuthorities();
+        List<String> role = new ArrayList<>();
+        for (GrantedAuthority authority : roles){
+            role.add(authority.getAuthority());
+        }
+        if(role.get(0).equals("ROLE_COACH")){
+            Coach coach = coachService.findByEmail(authentication.getName());
+            if(coach==null){
+                return new ModelAndView("redirect:/profileNotFound");
+            }
+            return new ModelAndView("redirect:/coachProfile/" + coach.getId());
+        } else {
+            Player player = playerService.findByEmail(authentication.getName());
+            if(player==null){
+                return new ModelAndView("redirect:/profileNotFound");
+            }
+            return new ModelAndView("redirect:/playerProfile/" + player.getId());
+        }
+    }
+
+    @GetMapping("/profileNotFound")
+    public ModelAndView profileNotFound(Authentication authentication){
+        ModelAndView modelAndView = new ModelAndView("/noProfile");
+        modelAndView.addObject("user",userService.findByEmail(authentication.getName()));
+        return modelAndView;
+    }
+
+    @GetMapping("/createProfile")
+    public ModelAndView createProfile(Authentication authentication){
+        MyUser myUser = userService.findByEmail(authentication.getName());
+        ModelAndView modelAndView;
+        if (myUser.getRole().getName().equals("ROLE_COACH")) {
+            modelAndView = new ModelAndView("/coach/createCoach");
+            modelAndView.addObject("coachAccount", myUser);
+            modelAndView.addObject("coach", new Coach());
+        } else {
+            modelAndView = new ModelAndView("/players/createPlayer");
+            modelAndView.addObject("playerAccount", myUser);
+            modelAndView.addObject("player", new Player());
+        }
+        return modelAndView;
+    }
+
+    @GetMapping("/changePassword")
+    public ModelAndView changePassword(){
+        ModelAndView modelAndView = new ModelAndView("/changePassword-checkpassword");
+        modelAndView.addObject("user",new MyUser());
+        return modelAndView;
+    }
+
+    @PostMapping("/changePassword")
+    public ModelAndView checkPassword(Authentication authentication,@Valid @ModelAttribute("user") MyUser myUser, BindingResult bindingResult){
+        MyUser user = userService.findByEmail(authentication.getName());
+        if(user.getPassword().equals(myUser.getPassword())){
+            ModelAndView modelAndView = new ModelAndView("/changePassword-newPassword");
+            modelAndView.addObject("user", new MyUser());
+            return modelAndView;
+        } else {
+            ModelAndView modelAndView = new ModelAndView("/changePassword-checkpassword");
+            bindingResult.rejectValue("password","WrongPassword.MyUser.email");
+            modelAndView.addObject("user",myUser);
+            return modelAndView;
+        }
+    }
+
+    @PostMapping("/changePass")
+    public ModelAndView changePass(@Valid @ModelAttribute("user") MyUser myUser, BindingResult bindingResult, Authentication authentication){
+        if(bindingResult.hasFieldErrors()){
+            ModelAndView modelAndView = new ModelAndView("/changePassword-newPassword");
+            modelAndView.addObject("user",myUser);
+            return modelAndView;
+        } else {
+            MyUser user = userService.findByEmail(authentication.getName());
+            user.setPassword(myUser.getPassword());
+            userService.save(user);
+            ModelAndView modelAndView =  new ModelAndView("/landing");
+            modelAndView.addObject("message","Password Change Successful");
+            return modelAndView;
+        }
     }
 }

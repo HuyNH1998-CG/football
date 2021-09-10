@@ -19,9 +19,6 @@ public class CoachController {
     @Autowired
     ICoachService iCoachService;
 
-//    @Autowired
-//    IWeeklySalaryService iWeeklySalaryService;
-
     @Value("${uploadPart}")
     String uploadPart;
 
@@ -47,8 +44,7 @@ public class CoachController {
             modelAndView.addObject("coach", coach.get());
             return modelAndView;
         } else {
-            ModelAndView modelAndView = new ModelAndView("/error.404");
-            return modelAndView;
+            return new ModelAndView("/error.404");
         }
     }
 
@@ -60,8 +56,7 @@ public class CoachController {
             modelAndView.addObject("coach", coach.get());
             return modelAndView;
         } else {
-            ModelAndView modelAndView = new ModelAndView("/error.404");
-            return modelAndView;
+            return new ModelAndView("/error.404");
         }
     }
 
@@ -96,8 +91,7 @@ public class CoachController {
             modelAndView.addObject("coach", coach.get());
             return modelAndView;
         } else {
-            ModelAndView modelAndView = new ModelAndView("/error.404");
-            return modelAndView;
+            return new ModelAndView("/error.404");
         }
     }
 

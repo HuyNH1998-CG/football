@@ -51,13 +51,13 @@
                                 </tr>
                                 <tr>
                                     <th>Salary</th>
-                                    <td th:text="${coach.salary}"></td>
+                                    <td th:text="${coach.salary}+ ' vnd'"></td>
                                 </tr>
                                 <tr>
                                     <th>Weekly Salary</th>
                                     <td th:switch="${coach.weeklySalary!=null}">
-                                        <span th:case="${true}" th:text="${coach.weeklySalary.totalSalary}"></span>
-                                        <span th:case="*">0</span>
+                                        <span th:case="${true}" th:text="${coach.weeklySalary.totalSalary+ ' vnd'}"></span>
+                                        <span th:case="*">0 vnd</span>
                                     </td>
                                 </tr>
                             </table>

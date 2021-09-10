@@ -23,10 +23,12 @@
                             <table class="table mb-6" th:object="${player}">
                                 <tr>
                                     <td>
+                                        <a th:href="@{/changePlayerAvatar/{id}(id=${player.id})}" class="btn btn-primary">
+                                            Change Avatar</a>
                                     </td>
                                     <td>
                                         <div class="round-img">
-                                            <a href=""><img width="200" th:src="@{'/'+ ${player.avatar}}" alt=""></a>
+                                            <a th:href="@{/changePlayerAvatar/{id}(id=${player.id})}"><img width="300" th:src="@{'/'+ ${player.avatar}}" alt=""></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -44,13 +46,13 @@
                                 </tr>
                                 <tr>
                                     <th>Salary</th>
-                                    <td th:text="${player.salary}"></td>
+                                    <td th:text="${player.salary} + ' vnd'"></td>
                                 </tr>
                                 <tr>
                                     <th>Weekly Salary</th>
                                     <td th:switch="${player.weeklySalary!=null}">
-                                        <span th:case="${true}" th:text="${player.weeklySalary.totalSalary}"></span>
-                                        <span th:case="*">0</span>
+                                        <span th:case="${true}" th:text="${player.weeklySalary.totalSalary} + ' vnd'"></span>
+                                        <span th:case="*">0 vnd</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -67,11 +69,11 @@
                                 </tr>
                                 <tr>
                                     <th>Height</th>
-                                    <td th:text="${player.height}"></td>
+                                    <td th:text="${player.height} + ' cm'"></td>
                                 </tr>
                                 <tr>
                                     <th>Weight</th>
-                                    <td th:text="${player.weight}"></td>
+                                    <td th:text="${player.weight} + ' kg'"></td>
                                 </tr>
                                 <tr>
                                     <th>BMI</th>
