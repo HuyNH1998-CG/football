@@ -22,12 +22,12 @@
                             <table class="table mb-6" th:object="${coach}">
                                 <tr>
                                     <td>
-                                        <a th:href="@{/changeCoachAvatar/{id}(id=${coach.id})}" class="btn btn-primary">
+                                        <a th:href="@{/c/changeCoachAvatar/{id}(id=${coach.id})}" class="btn btn-primary">
                                             Change Avatar</a>
                                     </td>
                                     <td>
                                         <div class="round-img">
-                                            <a th:href="@{/changeCoachAvatar/{id}(id=${coach.id})}"><img width="300"
+                                            <a th:href="@{/c/changeCoachAvatar/{id}(id=${coach.id})}"><img width="300"
                                                                                                          th:src="@{'/'+${coach.avatar}}"
                                                                                                          alt=""></a>
                                         </div>

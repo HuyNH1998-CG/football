@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="home :: links">
   <title>Bootstrap Example</title>
+  <meta charset="utf-8">
 </head>
 <body>
 <div th:replace="home :: preload"></div>
@@ -14,27 +15,35 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title">Coach Info</h4>
+            <h4 class="card-title">Coach</h4>
           </div>
           <div class="card-body">
-            <div class="basic-form">
-              <form th:action="@{/p/changePlayerAvatar}" th:object="${player}" method="post" enctype="multipart/form-data">
-                <input type="hidden" class="form-control" th:field="*{id}">
-                <div class="form-row">
-                  <div class="round-img">
-                    <a href=""><img width="400" th:src="@{'/'+${player.avatar}}" alt=""></a>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label>New Avatar</label>
-                    <div class="custom-file">
-                      <input type="file" name="file" class="custom-file-input" accept="image/jpeg"  required>
+            <div class="table-responsive">
+              <table class="table mb-0">
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Salary</th>
+                  <th>Weekly Salary</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="player : ${players}">
+                  <td>
+                    <div class="round-img">
+                      <a th:href="@{/a/playerSalary/{id}(id=${player.id})}"><img width="200" th:src="@{'/'+${player.avatar}}" alt=""></a>
                     </div>
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Update</button>
-              </form>
+                  </td>
+                  <td th:text="${player.name}"></td>
+                  <td th:text="${player.salary}"></td>
+                  <td th:switch="${player.weeklySalary!=null}">
+                    <span th:case="${true}" th:text="${player.weeklySalary.totalSalary}"></span>
+                    <span th:case="*">0</span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

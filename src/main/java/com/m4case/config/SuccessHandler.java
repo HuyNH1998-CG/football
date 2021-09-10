@@ -26,11 +26,11 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         }
         String role = roles.get(0);
         if (role.equals("ROLE_ADMIN")) {
-            url = "/home";
+            url = "/u/landing";
         } else if (role.equals("ROLE_COACH")) {
-            url = "/home";
+            url = "/u/landing";
         } else if (role.equals("ROLE_PLAYER")) {
-            url = "/home";
+            url = "/u/landing";
         } else {
             url = "/error";
         }

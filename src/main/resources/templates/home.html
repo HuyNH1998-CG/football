@@ -11,6 +11,14 @@
     <link rel="stylesheet" href="/vendor/owl-carousel/css/owl.theme.default.min.css">
     <link href="/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
+    <!--    -->
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <!--    -->
     <style>
         th {
             color: black
@@ -19,8 +27,15 @@
         td {
             color: black
         }
+
         label {
             color: black
+        }
+        a {
+            color: blue;
+        }
+        p {
+            color: black;
         }
     </style>
 </head>
@@ -42,7 +57,7 @@
         Nav header start
     ***********************************-->
     <div class="nav-header" th:fragment="nav-head">
-        <a href="/home" class="brand-logo">
+        <a href="/u/landing" class="brand-logo">
             <img class="logo-abbr" src="/images/logo.png" alt="">
             <img class="logo-compact" src="/images/logo-text.png" alt="">
             <img class="brand-title" src="/images/logo-text.png" alt="">
@@ -71,7 +86,7 @@
                                     <i class="mdi mdi-magnify"></i>
                                 </span>
                             <div>
-                                <form th:action="@{/home}" method="post">
+                                <form th:action="@{/u/home}" method="post">
                                     <input type="text" placeholder="Min salary" aria-label="Search" name="min">
                                     <input type="text" placeholder="Max salary" aria-label="Search" name="max">
                                     <button type="submit" class="btn btn-primary"> search</button>
@@ -87,7 +102,7 @@
                                 <i class="mdi mdi-account"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a href="/userProfile" class="dropdown-item">
+                                <a href="/u/userProfile" class="dropdown-item">
                                     <i class="icon-user"></i>
                                     <span class="ml-2">Profile </span>
                                 </a>
@@ -115,81 +130,48 @@
                 <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                         class="icon icon-single-04"></i><span class="nav-text">Dashboard</span></a>
                     <ul aria-expanded="false" class="mm-collapse">
-                        <li><a href="/home">Home</a></li>
+                        <li><a href="/u/home">Home</a></li>
                     </ul>
                 </li>
                 <li class="nav-label">Account</li>
                 <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                         class="icon icon-app-store"></i><span class="nav-text">My Account</span></a>
                     <ul aria-expanded="false" class="mm-collapse">
-                        <li><a href="/userProfile">Account Profile</a></li>
-                        <li><a href="/index2.html">Edit Account Profile</a></li>
+                        <li><a href="/u/userProfile">Account Profile</a></li>
+                        <li><a href="/u/editMyProfile">Edit Account Profile</a></li>
                         <li><a href="/index2.html">Change Account Avatar</a></li>
-                        <li><a href="/changePassword">Change Password</a></li>
+                        <li><a href="/u/changePassword">Change Password</a></li>
                     </ul>
                 </li>
                 <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                         class="icon icon-chart-bar-33"></i><span class="nav-text">My Work Info</span></a>
                     <ul aria-expanded="false" class="mm-collapse">
-                        <li><a href="/workProfile">Work Profile</a></li>
-                        <li><a href="/index2.html">Edit Work Profile</a></li>
+                        <li><a href="/u/workProfile">Work Profile</a></li>
+                        <li><a href="/u/editWorkProfile">Edit Work Profile</a></li>
                         <li><a href="/index2.html">Change Work Avatar</a></li>
                     </ul>
                 </li>
-                <li class="nav-label">Salary</li>
-                <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                        class="icon icon-world-2"></i><span class="nav-text">Bootstrap</span></a>
+                <li class="nav-label" sec:authorize="hasRole('ROLE_ADMIN')">Salary</li>
+                <li><a class="has-arrow" href="javascript:void()" aria-expanded="false" sec:authorize="hasRole('ROLE_ADMIN')"><i
+                        class="icon icon-world-2"></i><span class="nav-text">Select</span></a>
                     <ul aria-expanded="false" class="mm-collapse">
-                        <li><a href="/ui-accordion.html">Accordion</a></li>
-                        <li><a href="/ui-alert.html">Alert</a></li>
-                        <li><a href="/ui-badge.html">Badge</a></li>
-                        <li><a href="/ui-button.html">Button</a></li>
-                        <li><a href="/ui-modal.html">Modal</a></li>
-                        <li><a href="/ui-button-group.html">Button Group</a></li>
-                        <li><a href="/ui-list-group.html">List Group</a></li>
-                        <li><a href="/ui-media-object.html">Media Object</a></li>
-                        <li><a href="/ui-card.html">Cards</a></li>
-                        <li><a href="/ui-carousel.html">Carousel</a></li>
-                        <li><a href="/ui-dropdown.html">Dropdown</a></li>
-                        <li><a href="/ui-popover.html">Popover</a></li>
-                        <li><a href="/ui-progressbar.html">Progressbar</a></li>
-                        <li><a href="/ui-tab.html">Tab</a></li>
-                        <li><a href="/ui-typography.html">Typography</a></li>
-                        <li><a href="/ui-pagination.html">Pagination</a></li>
-                        <li><a href="/ui-grid.html">Grid</a></li>
+                        <li><a href="/a/getCoachList">Coach Salary</a></li>
+                        <li><a href="/a/getPlayerList">Player Salary</a></li>
                     </ul>
                 </li>
-                <li class="nav-label">Forms</li>
-                <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                <li class="nav-label" sec:authorize="hasRole('ROLE_ADMIN')">Forms</li>
+                <li><a class="has-arrow" href="javascript:void()" aria-expanded="false" sec:authorize="hasRole('ROLE_ADMIN')"><i
                         class="icon icon-form"></i><span class="nav-text">Forms</span></a>
                     <ul aria-expanded="false" class="mm-collapse">
-                        <li><a href="/createUser">New Account</a></li>
+                        <li><a href="/a/createUser">New Account</a></li>
                     </ul>
                 </li>
-                <li class="nav-label">Table</li>
+                <li class="nav-label">Chart</li>
                 <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                         class="icon icon-layout-25"></i><span class="nav-text">Table</span></a>
                     <ul aria-expanded="false" class="mm-collapse">
                         <li><a href="/table-bootstrap-basic.html">Bootstrap</a></li>
                         <li><a href="/table-datatable-basic.html">Datatable</a></li>
-                    </ul>
-                </li>
-                <li class="nav-label">Extra</li>
-                <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                        class="icon icon-single-copy-06"></i><span class="nav-text">Pages</span></a>
-                    <ul aria-expanded="false" class="mm-collapse">
-                        <li><a href="/page-register.html">Register</a></li>
-                        <li><a href="/page-login.html">Login</a></li>
-                        <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Error</a>
-                            <ul aria-expanded="false" class="mm-collapse">
-                                <li><a href="/page-error-400.html">Error 400</a></li>
-                                <li><a href="/page-error-403.html">Error 403</a></li>
-                                <li><a href="/page-error-404.html">Error 404</a></li>
-                                <li><a href="/page-error-500.html">Error 500</a></li>
-                                <li><a href="/page-error-503.html">Error 503</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/page-lock-screen.html">Lock Screen</a></li>
                     </ul>
                 </li>
             </ul>
@@ -237,7 +219,7 @@
                                         <td>
                                             <div class="round-img">
                                                 <a th:href="@{/playerProfile/{id}(id=${player.id})}"><img width="200"
-                                                                                                          th:src="@{${player.avatar}}"
+                                                                                                          th:src="@{'/' + ${player.avatar}}"
                                                                                                           alt=""></a>
                                             </div>
                                         </td>
@@ -246,7 +228,8 @@
                                         <td th:text="${player.hometown}"></td>
                                         <td th:text="${player.salary} + ' vnd'"></td>
                                         <td th:switch="${player.weeklySalary!=null}">
-                                            <span th:case="${true}" th:text="${player.weeklySalary.totalSalary}+ ' vnd'"></span>
+                                            <span th:case="${true}"
+                                                  th:text="${player.weeklySalary.totalSalary}+ ' vnd'"></span>
                                             <span th:case="*">0 vnd</span>
                                         </td>
                                         <td th:text="${player.position}"></td>
@@ -284,7 +267,7 @@
                                         <td>
                                             <div class="round-img">
                                                 <a th:href="@{/coachProfile/{id}(id=${coach.id})}"><img width="200"
-                                                                                                        th:src="@{${coach.avatar}}"
+                                                                                                        th:src="@{'/' + ${coach.avatar}}"
                                                                                                         alt=""></a>
                                             </div>
                                         </td>
@@ -292,7 +275,8 @@
                                         <td th:text="${coach.hometown}"></td>
                                         <td th:text="${coach.salary} + ' vnd'"></td>
                                         <td th:switch="${coach.weeklySalary!=null}">
-                                            <span th:case="${true}" th:text="${coach.weeklySalary.totalSalary} + ' vnd'"></span>
+                                            <span th:case="${true}"
+                                                  th:text="${coach.weeklySalary.totalSalary} + ' vnd'"></span>
                                             <span th:case="*">0 vnd</span>
                                         </td>
                                         <td th:text="${coach.email}"></td>
@@ -305,8 +289,60 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <h2 align="center">Player Salary </h2>
+                        <div id="chart" style="width: 550px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <script th:inline="javascript">
+        $(function () {
+            Highcharts.chart('chart', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Salary Chart'
+                },
+                subtitle: {
+                    text: 'Weekly'
+                },
+                xAxis: {
+                    categories: [[${keySet}]],
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    max: 5000000,
+                    title: {
+                        text: 'Salary'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">Name: {point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'VND:',
+                    data: [[${values}]]
+                }]
+            });
+        });
+    </script>
     <!--**********************************
         Content body end
     ***********************************-->

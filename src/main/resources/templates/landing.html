@@ -14,8 +14,12 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <a th:href="@{/test}">Test</a>
-                    <p th:if="${message}" th:text="${message}"></p>
+                    <div class="card-body">
+                        <p th:switch="${user.name!=null}">
+                            <span th:case="${true}" th:text="'Hello ' + ${user.name}" style="font-size: 30px"></span>
+                            <span th:case="*" style="font-size: 30px">Hello User, <a href="/u/createUserProfile">Can i have your profile</a></span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

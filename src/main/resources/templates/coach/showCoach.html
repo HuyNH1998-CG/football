@@ -37,7 +37,7 @@
                                 <tr th:each="coach : ${coaches}">
                                     <td>
                                         <div class="round-img">
-                                            <a href=""><img width="200" th:src="@{${coach.avatar}}" alt=""></a>
+                                            <a th:href="@{/c/coachProfile/{id}(id=${coach.id})}"><img width="200" th:src="@{'/'+${coach.avatar}}" alt=""></a>
                                         </div>
                                     </td>
                                     <td th:text="${coach.name}"></td>

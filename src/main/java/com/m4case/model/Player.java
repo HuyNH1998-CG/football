@@ -14,8 +14,10 @@ public class Player {
     private String name;
     private Date birthday;
     private String hometown;
-    private String position;
-    private String hype;
+    @ManyToOne
+    private Position position;
+    @ManyToOne
+    private Hype hype;
     private int height;
     private int weight;
     private float bmi;
@@ -25,7 +27,8 @@ public class Player {
     private WeeklySalary weeklySalary;
 
     private String avatar;
-    private String status;
+    @ManyToOne
+    private Status status;
 
     @Column(unique = true)
     private String email;
@@ -33,7 +36,7 @@ public class Player {
     public Player() {
     }
 
-    public Player(long id, String name, Date birthday, String hometown, String position, String hype, int height, int weight, float bmi, long salary, WeeklySalary weeklySalary, String avatar, String status, String email) {
+    public Player(long id, String name, Date birthday, String hometown, Position position, Hype hype, int height, int weight, float bmi, long salary, WeeklySalary weeklySalary, String avatar, Status status, String email) {
         this.id = id;
         this.name = name;
         this.birthday = birthday;
@@ -82,19 +85,19 @@ public class Player {
         this.hometown = hometown;
     }
 
-    public String getPosition() {
+    public Position getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 
-    public String getHype() {
+    public Hype getHype() {
         return hype;
     }
 
-    public void setHype(String hype) {
+    public void setHype(Hype hype) {
         this.hype = hype;
     }
 
@@ -146,11 +149,11 @@ public class Player {
         this.avatar = avatar;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

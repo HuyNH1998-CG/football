@@ -23,12 +23,12 @@
                             <table class="table mb-6" th:object="${player}">
                                 <tr>
                                     <td>
-                                        <a th:href="@{/changePlayerAvatar/{id}(id=${player.id})}" class="btn btn-primary">
+                                        <a th:href="@{/p/changePlayerAvatar/{id}(id=${player.id})}" class="btn btn-primary">
                                             Change Avatar</a>
                                     </td>
                                     <td>
                                         <div class="round-img">
-                                            <a th:href="@{/changePlayerAvatar/{id}(id=${player.id})}"><img width="300" th:src="@{'/'+ ${player.avatar}}" alt=""></a>
+                                            <a th:href="@{/p/changePlayerAvatar/{id}(id=${player.id})}"><img width="300" th:src="@{'/'+ ${player.avatar}}" alt=""></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -57,15 +57,15 @@
                                 </tr>
                                 <tr>
                                     <th>Position</th>
-                                    <td th:text="${player.position}"></td>
+                                    <td th:text="${player.position.name}"></td>
                                 </tr>
                                 <tr>
                                     <th>Hype</th>
-                                    <td th:text="${player.hype}"></td>
+                                    <td th:text="${player.hype.name}"></td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td th:text="${player.status}"></td>
+                                    <td th:text="${player.status.name}"></td>
                                 </tr>
                                 <tr>
                                     <th>Height</th>

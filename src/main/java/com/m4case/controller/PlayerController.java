@@ -1,10 +1,7 @@
 package com.m4case.controller;
 
 import com.m4case.model.Player;
-import com.m4case.service.ICoachService;
-import com.m4case.service.IMyUserService;
-import com.m4case.service.IPlayerService;
-import com.m4case.service.IRoleService;
+import com.m4case.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,6 +15,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/p")
 public class PlayerController {
     @Autowired
     IMyUserService userService;
@@ -30,6 +28,13 @@ public class PlayerController {
 
     @Autowired
     IPlayerService playerService;
+
+    @Autowired
+    private IPositionService positionService;
+    @Autowired
+    private IStatusService statusService;
+    @Autowired
+    private IHypeService hypeService;
 
     @Value("${uploadPart}")
     String uploadPart;
@@ -46,6 +51,9 @@ public class PlayerController {
     public ModelAndView editPlayer(@PathVariable long id){
         ModelAndView modelAndView = new ModelAndView("/players/edit");
         modelAndView.addObject("player", playerService.findById(id).get());
+        modelAndView.addObject("positions", positionService.findAll());
+        modelAndView.addObject("hypes", hypeService.findAll());
+        modelAndView.addObject("statuses", statusService.findAll());
         return modelAndView;
     }
     @GetMapping("/coacheditplayer/{id}")
@@ -64,9 +72,8 @@ public class PlayerController {
         float height = player.getHeight();
         float bmi = weight / (height/100*2);
         player.setBmi(bmi);
-        player.setStatus("Playing");
         player = (Player) playerService.saveObj(player);
-        return new ModelAndView("redirect:/playerProfile/" + player.getId());
+        return new ModelAndView("redirect:/p/playerProfile/" + player.getId());
     }
 
     @GetMapping("/playerProfile/{id}")
@@ -104,6 +111,6 @@ public class PlayerController {
         FileCopyUtils.copy(file.getBytes(), new File(uploadPart, fileName));
         player.setAvatar(fileName);
         playerService.save(player);
-        return new ModelAndView("redirect:/playerProfile/" + player.getId());
+        return new ModelAndView("redirect:/p/playerProfile/" + player.getId());
     }
 }

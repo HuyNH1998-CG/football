@@ -19,7 +19,8 @@ public class MyUser {
 
     private String name;
     private String age;
-    private String gender;
+    @ManyToOne
+    private Gender gender;
     private String avatar;
 
     @ManyToOne
@@ -28,7 +29,7 @@ public class MyUser {
     public MyUser() {
     }
 
-    public MyUser(Long id, String email, String password, String name, String age, String gender, String avatar, Role role) {
+    public MyUser(Long id, String email, String password, String name, String age, Gender gender, String avatar, Role role) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -63,14 +64,6 @@ public class MyUser {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public String getName() {
         return name;
     }
@@ -87,11 +80,11 @@ public class MyUser {
         this.age = age;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
@@ -103,4 +96,11 @@ public class MyUser {
         this.avatar = avatar;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

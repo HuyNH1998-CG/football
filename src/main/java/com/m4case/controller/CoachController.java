@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/c")
 public class CoachController {
     @Autowired
     ICoachService iCoachService;
@@ -66,21 +67,21 @@ public class CoachController {
         FileCopyUtils.copy(file.getBytes(), new File(uploadPart, fileName));
         coach.setAvatar(fileName);
         coach = (Coach) iCoachService.saveObj(coach);
-        return new ModelAndView("redirect:/coachProfile/" + coach.getId());
+        return new ModelAndView("redirect:/c/coachProfile/" + coach.getId());
     }
 
 
     @PostMapping("/editCoach/{id}")
     public ModelAndView edit(@ModelAttribute("coach") Coach coach) {
         iCoachService.save(coach);
-        return new ModelAndView("redirect:/coachProfile/" + coach.getId());
+        return new ModelAndView("redirect:/c/coachProfile/" + coach.getId());
     }
 
 
     @PostMapping("/deleteCoach/{id}")
     public ModelAndView delete(@ModelAttribute("coach") Coach coach) {
         iCoachService.delete(coach.getId());
-        return new ModelAndView("redirect:/coach/show");
+        return new ModelAndView("redirect:/c/coach/show");
     }
 
     @GetMapping("/changeCoachAvatar/{id}")
@@ -102,7 +103,7 @@ public class CoachController {
         FileCopyUtils.copy(file.getBytes(), new File(uploadPart, fileName));
         coach.setAvatar(fileName);
         iCoachService.save(coach);
-        return new ModelAndView("redirect:/coachProfile/" + coach.getId());
+        return new ModelAndView("redirect:/c/coachProfile/" + coach.getId());
     }
 
     @GetMapping("/coachProfile/{id}")

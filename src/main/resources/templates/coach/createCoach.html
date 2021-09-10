@@ -19,7 +19,7 @@
                     </div>
                     <div class="card-body">
                         <div class="basic-form">
-                            <form th:action="@{/createCoach}" th:object="${coach}" method="post" enctype="multipart/form-data">
+                            <form th:action="@{/c/createCoach}" th:object="${coach}" method="post" enctype="multipart/form-data">
                                 <input type="email" class="form-control" th:value="${coachAccount.getEmail()}" th:name="email" hidden>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
