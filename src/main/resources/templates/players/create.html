@@ -8,23 +8,27 @@
 <div align="center">
     <h1>Create new Player</h1>
     <p>
-        <a href="/players/player/list">Come back home</a>
+        <a href="/player/list">Come back home</a>
     </p>
     <div th:if="${message}">
         <p th:text="${message}"></p>
     </div>
-    <form th:action="@{/create-player}" th:object="${player}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/player/create}" th:object="${player}" method="post" enctype="multipart/form-data">
         <tr>
             <td>Name</td>
             <td><input type="text" name="name" th:field="*{name}"></td>
         </tr>
         <tr>
             <td>Avatar</td>
-            <td><input type="file" name="avatar" th:field="*{avatar}"></td>
+            <td><input type="file" name="upAvatar"></td>
         </tr>
         <tr>
             <td>Birthday</td>
             <td><input type="date" name="birthday" th:field="*{birthday}"></td>
+        </tr>
+        <tr>
+            <td>HomeTown</td>
+            <td><input type="text" name="birthday" th:field="*{hometown}"></td>
         </tr>
         <tr>
             <td>Position</td>
@@ -46,6 +50,9 @@
             <td>Salary</td>
             <td><input type="text" th:field="*{salary}"></td>
         </tr>
+
+        <button type="submit" class="btn btn-primary">Create</button>
+
     </form>
 </div>
 </div>

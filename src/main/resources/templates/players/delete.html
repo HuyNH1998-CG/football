@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="home :: links">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 
+<h1>Confirm Delete</h1>
+<h1>Are you sure you want to detele Player</h1>
+<form  method="post">
+    <input hidden th:value="${player.id}">
+    <button type="submit">Delete</button>
+</form>
+<a href="/player/list" type="button">Cancel</a>
 </body>
 </html>

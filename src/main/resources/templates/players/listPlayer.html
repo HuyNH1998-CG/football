@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="home :: links">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+</head>
+<body>
+<div th:replace="home :: preload"></div>
+<div id="main-wrapper" class="show">
+    <div th:replace="home :: nav-head"></div>
+    <div th:replace="home :: header"></div>
+    <div th:replace="home :: sidebar"></div>
+    <div class="content-body" style="min-height: 1140px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Player</h4>
+                        <a href="/player/create">Create new Player</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Avatar</th>
+                                    <th>Address</th>
+                                    <th>Status</th>
+                                    <th>Create</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                    <th>Detail </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="player : ${players}" th:object="${player}">
+                                    <td th:hidden="*{id}"></td>
+                                    <td th:text="*{name}"></td>
+                                    <td><img th:src="*{avatar}"width="200"height="200" alt=""></td>
+                                    <td th:text="*{hometown}"></td>
+                                    <td th:text="*{status}"></td>
+                                    <td>
+                                        <a th:href="@{/player/edit/__${player.id}__}">Edit</a>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/player/delete/__${player.id}__}">Delete</a>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/player/detail/__${player.id}__}">Detail</a>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="home :: footer"></div>
+</div>
+<!--**********************************
+    Scripts
+***********************************-->
+<!-- Required vendors -->
+<script src="/vendor/global/global.min.js"></script>
+<script src="/js/quixnav-init.js"></script>
+<script src="/js/custom.min.js"></script>
+<!-- Vectormap -->
+<script src="/vendor/raphael/raphael.min.js"></script>
+<script src="/vendor/morris/morris.min.js"></script>
+<script src="/vendor/circle-progress/circle-progress.min.js"></script>
+<script src="/vendor/chart.js/Chart.bundle.min.js"></script>
+<script src="/vendor/gaugeJS/dist/gauge.min.js"></script>
+<!--  flot-chart js -->
+<script src="/vendor/flot/jquery.flot.js"></script>
+<script src="/vendor/flot/jquery.flot.resize.js"></script>
+<!-- Owl Carousel -->
+<script src="/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+<!-- Counter Up -->
+<script src="/vendor/jqvmap/js/jquery.vmap.min.js"></script>
+<script src="/vendor/jqvmap/js/jquery.vmap.usa.js"></script>
+<script src="/vendor/jquery.counterup/jquery.counterup.min.js"></script>
+<script src="/js/dashboard/dashboard-1.js"></script>
+</body>
+</html>

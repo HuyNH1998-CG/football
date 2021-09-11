@@ -8,7 +8,7 @@
 <div align="center">
     <h1>HOME PLAYERS</h1>
     <p>
-        <a href="/create-player">Create new Player</a>
+        <a href="/player/create">Create new Player</a>
     </p>
     <table>
         <tr>
@@ -26,20 +26,20 @@
         <tr th:each="player : ${players}" th:object="${player}">
             <td th:hidden="*{id}"></td>
             <td th:text="*{name}"></td>
-            <td th:text="*{avatar}"></td>
+            <td><img th:src="*{avatar}"width="200"height="200" alt=""></td>
             <td th:text="*{birthday}"></td>
             <td th:text="*{hometown}"></td>
             <td th:text="*{position}"></td>
             <td th:text="*{hype}"></td>
             <td th:text="*{status}"></td>
             <td>
-                <a th:href="@{/edit-player/__${player.id}__}">Edit</a>
+                <a th:href="@{/player/edit/__${player.id}__}">Edit</a>
             </td>
             <td>
-                <a th:href="@{/delete-player/__${player.id}__}">Delete</a>
+                <a th:href="@{/player/delete/__${player.id}__}">Delete</a>
             </td>
             <td>
-                <a th:href="@{/detail-player/__${player.id}__}">Detail</a>
+                <a th:href="@{/player/detail/__${player.id}__}">Detail</a>
             </td>
         </tr>
     </table>

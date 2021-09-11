@@ -21,7 +21,7 @@ public class Player {
     private int bmi;
     private long salary;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private WeeklySalary weeklySalary;
 
     private String avatar;
