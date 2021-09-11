@@ -43,7 +43,11 @@
                 </tr>
                 <tr>
                   <th>Gender</th>
-                  <td th:text="${user.gender.name}"></td>
+                  <td th:switch="${user.gender!=null}">
+                                            <span th:case="${true}"
+                                                  th:text="${user.gender.name}"></span>
+                    <span th:case="*">unknown</span>
+                  </td>
                 </tr>
               </table>
             </div>

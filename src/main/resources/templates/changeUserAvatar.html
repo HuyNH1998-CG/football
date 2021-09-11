@@ -18,19 +18,18 @@
           </div>
           <div class="card-body">
             <div class="basic-form">
-              <form th:action="@{/p/changeAvatar}" th:object="${player}" method="post" enctype="multipart/form-data">
+              <form th:action="@{/u/changeAvatar}" th:object="${user}" method="post" enctype="multipart/form-data">
                 <input type="hidden" class="form-control" th:field="*{id}">
                 <div class="form-row">
-                  <label>Current Avatar</label>
                   <div class="round-img">
-                    <a href=""><img width="400" th:src="@{'/'+${player.avatar}}" alt=""></a>
+                    <a href=""><img width="400" th:src="@{'/'+${user.avatar}}" alt=""></a>
                   </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label>New Avatar</label>
                     <div class="custom-file">
-                      <input type="file" name="file" class="custom-file-input" accept="image/jpeg"  required>
+                      <input type="file" name="file" class="custom-file-input" accept="image/jpeg" required>
                     </div>
                   </div>
                 </div>

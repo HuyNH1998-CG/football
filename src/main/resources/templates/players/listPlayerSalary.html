@@ -15,7 +15,7 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title">Coach</h4>
+            <h4 class="card-title">Players</h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -38,7 +38,7 @@
                   <td th:text="${player.name}"></td>
                   <td th:text="${player.salary}"></td>
                   <td th:switch="${player.weeklySalary!=null}">
-                    <span th:case="${true}" th:text="${player.weeklySalary.totalSalary}"></span>
+                    <span th:case="${true}" th:text="${player.weeklySalary.totalSalary}+ ' vnd'"></span>
                     <span th:case="*">0</span>
                   </td>
                 </tr>

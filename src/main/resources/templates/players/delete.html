@@ -1,10 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="home :: links">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-
+<div th:replace="home :: preload"></div>
+<div id="main-wrapper" class="show">
+    <div th:replace="home :: nav-head"></div>
+    <div th:replace="home :: header"></div>
+    <div th:replace="home :: sidebar"></div>
+    <div class="content-body" style="min-height: 1140px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Confirm Delete</h4>
+                        <h1 class="card-title">Are you sure you want to detele this Player</h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-6" th:object="${player}">
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <div class="round-img">
+                                            <a href=""><img width="200" th:src="@{'/'+${player.avatar}}" alt=""></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td th:text="${player.email}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <td th:text="${player.name}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Birthday</th>
+                                    <td th:text="${player.birthday}"></td>
+                                </tr>
+                                <tr>
+                                    <th>HomeTown</th>
+                                    <td th:text="${player.hometown}"></td>
+                                </tr>
+                            </table>
+                            <form th:action="@{/p/delete}" method="post">
+                                <input hidden name="id" th:value="${player.id}">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <a href="/p/list" class="btn btn-primary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="home :: footer"></div>
+</div>
+<!--**********************************
+    Scripts
+***********************************-->
+<!-- Required vendors -->
+<script src="/vendor/global/global.min.js"></script>
+<script src="/js/quixnav-init.js"></script>
+<script src="/js/custom.min.js"></script>
+<!-- Vectormap -->
+<script src="/vendor/raphael/raphael.min.js"></script>
+<script src="/vendor/morris/morris.min.js"></script>
+<script src="/vendor/circle-progress/circle-progress.min.js"></script>
+<script src="/vendor/chart.js/Chart.bundle.min.js"></script>
+<script src="/vendor/gaugeJS/dist/gauge.min.js"></script>
+<!--  flot-chart js -->
+<script src="/vendor/flot/jquery.flot.js"></script>
+<script src="/vendor/flot/jquery.flot.resize.js"></script>
+<!-- Owl Carousel -->
+<script src="/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+<!-- Counter Up -->
+<script src="/vendor/jqvmap/js/jquery.vmap.min.js"></script>
+<script src="/vendor/jqvmap/js/jquery.vmap.usa.js"></script>
+<script src="/vendor/jquery.counterup/jquery.counterup.min.js"></script>
+<script src="/js/dashboard/dashboard-1.js"></script>
 </body>
 </html>

@@ -55,8 +55,8 @@
                   <td th:text="${coach.weeklySalary.totalSalary}"></td>
                 </tr>
               </table>
-              <form  method="post">
-                <input hidden th:value="${coach.id}">
+              <form th:action="@{/c/delete}" method="post">
+                <input hidden name="id" th:value="${coach.id}">
                 <button type="submit" class="btn btn-danger">Delete</button>
                 <a href="/c/showCoach" class="btn btn-primary">Cancel</a>
               </form>

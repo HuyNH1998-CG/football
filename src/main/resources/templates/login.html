@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-100">
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="utf-8">
@@ -12,7 +12,7 @@
 </head>
 <style>
   body {
-    background-image: url('cover.jpg');
+    background-image: url('/images/background.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -28,6 +28,7 @@
             <div class="col-xl-12">
               <div class="auth-form">
                 <h4 class="text-center mb-4">Sign in your account</h4>
+                <p th:if="${param.error}" style="color: red">Incorrect credential please check your info</p>
                 <form action="/login" method="post">
                   <div class="form-group">
                     <label><strong>Email</strong></label>

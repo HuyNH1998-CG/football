@@ -1,58 +1,70 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="home :: links">
-  <meta charset="UTF-8">
-  <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
 <div th:replace="home :: preload"></div>
 <div id="main-wrapper" class="show">
-  <div th:replace="home :: nav-head"></div>
-  <div th:replace="home :: header"></div>
-  <div th:replace="home :: sidebar"></div>
-  <div class="content-body" style="min-height: 1140px;">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-header">
-            <h4 class="card-title">Player Info</h4>
-          </div>
-          <div class="card-body">
-            <div class="basic-form">
-              <form th:action="@{/p/editPlayerbyCoach}" method="post"
-                    th:object="${player}">
-                <input type="hidden" th:field="*{id}">
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label>Height</label>
-                    <input type="number" class="form-control" th:field="*{height}"  required>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label>Weight</label>
-                    <input type="number" class="form-control" th:field="*{weight}"  required>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label>Position:</label>
-                    <select class="form-control" th:field="*{position}"  required>
-                      <option value="Striker">Striker</option>
-                    </select>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label>Hype:</label>
-                    <select class="form-control" th:field="*{hype}"  required>
-                      <option value="High">High</option>
-                    </select>
-                  </div>
+    <div th:replace="home :: nav-head"></div>
+    <div th:replace="home :: header"></div>
+    <div th:replace="home :: sidebar"></div>
+    <div class="content-body" style="min-height: 1140px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Player Info</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="basic-form">
+                            <form th:action="@{/p/coacheditplayer}" method="post"
+                                  th:object="${player}">
+                                <input type="hidden" th:field="*{id}">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Height</label>
+                                        <input type="number" class="form-control" th:field="*{height}" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Weight</label>
+                                        <input type="number" class="form-control" th:field="*{weight}" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Position:</label>
+                                        <select class="form-control" th:field="*{position}" required>
+                                            <option th:each="position:${positions}" th:value="${position.id}"
+                                                    th:text="${position.name}"
+                                                    th:selected="(${position.name}) and (${position.id} == *{position.id})"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Hype:</label>
+                                        <select class="form-control" th:field="*{hype}" required>
+                                            <option th:each="hype:${hypes}" th:value="${hype.id}"
+                                                    th:text="${hype.name}"
+                                                    th:selected="(${hype.name}) and (${hype.id} == *{hype.id})"></option>>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Status:</label>
+                                        <select class="form-control" th:field="*{status}" required>
+                                            <option th:each="status:${statuses}" th:value="${status.id}"
+                                                    th:text="${status.name}"
+                                                    th:selected="(${status.name}) and (${status.id} == *{status.id})"></option>>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
-              </form>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div th:replace="home :: footer"></div>
+    <div th:replace="home :: footer"></div>
 </div>
 <!--**********************************
     Scripts

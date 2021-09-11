@@ -15,7 +15,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Coach</h4>
+                        <h4 class="card-title">Coaches</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -27,8 +27,8 @@
                                     <th>Home Town</th>
                                     <th>Salary</th>
                                     <th>Weekly Salary</th>
-                                    <th>Position</th>
-                                    <th>Hype</th>
+                                    <th>Email</th>
+                                    <th>Age</th>
                                     <th>Update Info</th>
                                     <th>Fire</th>
                                 </tr>
@@ -37,7 +37,7 @@
                                 <tr th:each="coach : ${coaches}">
                                     <td>
                                         <div class="round-img">
-                                            <a th:href="@{/c/coachProfile/{id}(id=${coach.id})}"><img width="200" th:src="@{'/'+${coach.avatar}}" alt=""></a>
+                                            <a th:href="@{/c/profile/{id}(id=${coach.id})}"><img width="200" th:src="@{'/'+${coach.avatar}}" alt=""></a>
                                         </div>
                                     </td>
                                     <td th:text="${coach.name}"></td>
@@ -49,10 +49,10 @@
                                     </td>
                                     <td th:text="${coach.email}"></td>
                                     <td th:text="${coach.age}"></td>
-                                    <td><a th:href="@{/editCoach/{id}(id=${coach.id})}" type="button"
-                                           class="btn btn-default">Update</a></td>
-                                    <td><a th:href="@{/deleteCoach/{id}(id=${coach.id})}" type="button"
-                                           class="btn btn-default">Fire</a></td>
+                                    <td><a th:href="@{/c/edit/{id}(id=${coach.id})}"
+                                           class="btn btn-primary">Update</a></td>
+                                    <td><a th:href="@{/c/delete/{id}(id=${coach.id})}"
+                                           class="btn btn-danger">Fire</a></td>
                                 </tr>
                                 </tbody>
                             </table>

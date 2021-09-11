@@ -22,7 +22,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/u")
-public class AuthController {
+public class UserController {
     @Autowired
     IMyUserService userService;
 
@@ -61,16 +61,25 @@ public class AuthController {
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView("/home");
         List<Player> players = (List<Player>) playerService.findAll();
+        List<Coach> coaches = (List<Coach>) coachService.findAll();
         Map<String, Long> data = new LinkedHashMap<>();
+        Map<String, Long> data2 = new LinkedHashMap<>();
         for (Player player : players) {
             if (player.getWeeklySalary() != null) {
                 data.put(player.getName(), player.getWeeklySalary().getTotalSalary());
             }
         }
+        for (Coach coach : coaches) {
+            if (coach.getWeeklySalary() != null) {
+                data2.put(coach.getName(), coach.getWeeklySalary().getTotalSalary());
+            }
+        }
         modelAndView.addObject("keySet", data.keySet());
         modelAndView.addObject("values", data.values());
-        modelAndView.addObject("players", playerService.findAll());
-        modelAndView.addObject("coaches", coachService.findAll());
+        modelAndView.addObject("keySet2", data2.keySet());
+        modelAndView.addObject("values2", data2.values());
+        modelAndView.addObject("players", players);
+        modelAndView.addObject("coaches", coaches);
         return modelAndView;
     }
 
@@ -100,7 +109,7 @@ public class AuthController {
         return modelAndView;
     }
 
-    @GetMapping("/userProfile")
+    @GetMapping("/profile")
     public ModelAndView userProfile(Authentication authentication) {
         MyUser myUser = userService.findByEmail(authentication.getName());
         ModelAndView modelAndView = new ModelAndView("/userDetail");
@@ -118,7 +127,7 @@ public class AuthController {
     }
 
     @PostMapping("/createUserProfile")
-    public ModelAndView createUserProfile(@RequestAttribute MultipartFile file, @ModelAttribute("user")MyUser myUser) throws IOException {
+    public ModelAndView createUserProfile(@RequestAttribute MultipartFile file, @ModelAttribute("user") MyUser myUser) throws IOException {
         MyUser user = userService.findByEmail(myUser.getEmail());
         String fileName = file.getOriginalFilename();
         FileCopyUtils.copy(file.getBytes(), new File(uploadPart, fileName));
@@ -177,33 +186,34 @@ public class AuthController {
         }
         return modelAndView;
     }
+
     @GetMapping("/editWorkProfile")
     public ModelAndView editWorkProfile(Authentication authentication) {
         MyUser myUser = userService.findByEmail(authentication.getName());
         if (myUser.getRole().getName().equals("ROLE_COACH")) {
-            return new ModelAndView("redirect:/c/editCoach/"+coachService.findByEmail(myUser.getEmail()).getId());
+            return new ModelAndView("redirect:/c/editCoach/" + coachService.findByEmail(myUser.getEmail()).getId());
         } else {
-            return new ModelAndView("redirect:/p/editplayer/"+playerService.findByEmail(myUser.getEmail()).getId());
+            return new ModelAndView("redirect:/p/editplayer/" + playerService.findByEmail(myUser.getEmail()).getId());
         }
     }
 
     @GetMapping("/editMyProfile")
-    public ModelAndView editProfileForm(Authentication authentication){
+    public ModelAndView editProfileForm(Authentication authentication) {
         ModelAndView modelAndView = new ModelAndView("/userProfileEdit");
-        modelAndView.addObject("user",userService.findByEmail(authentication.getName()));
-        modelAndView.addObject("genders",genderService.findAll());
+        modelAndView.addObject("user", userService.findByEmail(authentication.getName()));
+        modelAndView.addObject("genders", genderService.findAll());
         return modelAndView;
     }
 
     @PostMapping("/editMyProfile")
-    public ModelAndView editProfile(@ModelAttribute("user") MyUser myUser){
+    public ModelAndView editProfile(@ModelAttribute("user") MyUser myUser) {
         MyUser user = userService.findByEmail(myUser.getEmail());
         user.setName(myUser.getName());
         user.setAge(myUser.getAge());
         user.setGender(myUser.getGender());
+        userService.save(user);
         return new ModelAndView("redirect:/u/landing");
     }
-
 
 
     @GetMapping("/changePassword")
@@ -238,8 +248,39 @@ public class AuthController {
             MyUser user = userService.findByEmail(authentication.getName());
             user.setPassword(myUser.getPassword());
             userService.save(user);
-            ModelAndView modelAndView = new ModelAndView("/landing");
-            modelAndView.addObject("message", "Password Change Successful");
+            return new ModelAndView("redirect:/u/landing");
+        }
+    }
+
+    @GetMapping("/changeAvatar")
+    public ModelAndView changeAvatarForm(Authentication authentication) {
+        ModelAndView modelAndView = new ModelAndView("/changeUserAvatar");
+        modelAndView.addObject("user", userService.findByEmail(authentication.getName()));
+        return modelAndView;
+    }
+
+    @PostMapping("/changeAvatar")
+    public ModelAndView changeAvatar(@RequestAttribute MultipartFile file, @ModelAttribute("user") MyUser myUser) throws IOException {
+        myUser = userService.findById(myUser.getId()).get();
+        String fileName = file.getOriginalFilename();
+        FileCopyUtils.copy(file.getBytes(), new File(uploadPart, fileName));
+        myUser.setAvatar(fileName);
+        userService.save(myUser);
+        return new ModelAndView("redirect:/u/profile/");
+    }
+
+    @GetMapping("/changeWorkAvatar")
+    public ModelAndView changeWorkAvatar(Authentication authentication) {
+        MyUser user = userService.findByEmail(authentication.getName());
+        if (user.getRole().getName().equals("ROLE_COACH")) {
+            Coach coach = coachService.findByEmail(user.getEmail());
+            ModelAndView modelAndView = new ModelAndView("/coach/changeCoachAvatar");
+            modelAndView.addObject("coach", coach);
+            return modelAndView;
+        } else {
+            Player player = playerService.findByEmail(user.getEmail());
+            ModelAndView modelAndView = new ModelAndView("/players/changePlayerAvatar");
+            modelAndView.addObject("player", player);
             return modelAndView;
         }
     }

@@ -43,7 +43,7 @@ public class AdminController {
     @Autowired
     private IHypeService hypeService;
 
-    @GetMapping("/createUser")
+    @GetMapping("/create")
     public ModelAndView showCreate() {
         ModelAndView modelAndView = new ModelAndView("/createUser");
         modelAndView.addObject("myUser", new MyUser());
@@ -51,7 +51,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    @PostMapping("/createUser")
+    @PostMapping("/create")
     public ModelAndView create(@Valid @ModelAttribute("myUser") MyUser myUser, BindingResult bindingResult) {
         String role = myUser.getRole().getName();
         emailValidator.validate(myUser, bindingResult);
@@ -63,9 +63,7 @@ public class AdminController {
         }
         if (role.equals("ROLE_ADMIN")) {
             userService.save(myUser);
-            ModelAndView modelAndView = new ModelAndView("/landing");
-            modelAndView.addObject("message", "AdminCreated");
-            return modelAndView;
+            return new ModelAndView("redirect:/u/landing");
         } else if (role.equals("ROLE_COACH")) {
             ModelAndView modelAndView = new ModelAndView("/coach/createCoach");
             userService.save(myUser);
@@ -84,14 +82,14 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/getCoachList")
+    @GetMapping("/coachList")
     public ModelAndView coachList() {
         ModelAndView modelAndView = new ModelAndView("/coach/listCoachSalary");
         modelAndView.addObject("coaches", coachService.findAll());
         return modelAndView;
     }
 
-    @GetMapping("/getPlayerList")
+    @GetMapping("/playerList")
     public ModelAndView playerList() {
         ModelAndView modelAndView = new ModelAndView("/players/listPlayerSalary");
         modelAndView.addObject("players", playerService.findAll());
@@ -118,7 +116,7 @@ public class AdminController {
         weeklySalary.setTotalSalary(salary + bonus);
         coach.setWeeklySalary(weeklySalaryService.saveSalary(weeklySalary));
         coachService.save(coach);
-        return new ModelAndView("redirect:/c/coachProfile/" + coach.getId());
+        return new ModelAndView("redirect:/c/profile/" + coach.getId());
     }
 
     @GetMapping("/playerSalary/{id}")
@@ -141,6 +139,20 @@ public class AdminController {
         weeklySalary.setTotalSalary((salary + bonus + bonus2) * time);
         player.setWeeklySalary(weeklySalaryService.saveSalary(weeklySalary));
         playerService.save(player);
-        return new ModelAndView("redirect:/p/playerProfile/" + player.getId());
+        return new ModelAndView("redirect:/p/profile/" + player.getId());
+    }
+
+    @GetMapping("/showCoach")
+    public ModelAndView finAll() {
+        ModelAndView modelAndView = new ModelAndView("/coach/showCoach");
+        modelAndView.addObject("coaches", coachService.findAll());
+        return modelAndView;
+    }
+
+    @GetMapping("/showPlayer")
+    public ModelAndView findAll() {
+        ModelAndView modelAndView = new ModelAndView("/players/listPlayer");
+        modelAndView.addObject("players", playerService.findAll());
+        return modelAndView;
     }
 }

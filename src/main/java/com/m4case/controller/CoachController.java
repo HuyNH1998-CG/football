@@ -1,7 +1,12 @@
 package com.m4case.controller;
 
 import com.m4case.model.Coach;
+import com.m4case.model.MyUser;
+import com.m4case.model.Player;
+import com.m4case.model.WeeklySalary;
 import com.m4case.service.ICoachService;
+import com.m4case.service.IMyUserService;
+import com.m4case.service.IWeeklySalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,6 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -19,16 +27,13 @@ import java.util.Optional;
 public class CoachController {
     @Autowired
     ICoachService iCoachService;
+    @Autowired
+    IMyUserService iMyUserService;
+    @Autowired
+    IWeeklySalaryService weeklySalaryService;
 
     @Value("${uploadPart}")
     String uploadPart;
-
-    @GetMapping("/showCoach")
-    public ModelAndView finAll() {
-        ModelAndView modelAndView = new ModelAndView("/coach/showCoach");
-        modelAndView.addObject("coaches", iCoachService.findAll());
-        return modelAndView;
-    }
 
 //    @GetMapping("/create")
 //    public ModelAndView showCreate() {
@@ -37,7 +42,7 @@ public class CoachController {
 //        return modelAndView;
 //    }
 
-    @GetMapping("/editCoach/{id}")
+    @GetMapping("/edit/{id}")
     public ModelAndView showEdit(@PathVariable long id) {
         Optional<Coach> coach = iCoachService.findById(id);
         if (coach.isPresent()) {
@@ -45,11 +50,22 @@ public class CoachController {
             modelAndView.addObject("coach", coach.get());
             return modelAndView;
         } else {
-            return new ModelAndView("/error.404");
+            return new ModelAndView("/focus-2/page-error-404");
         }
     }
 
-    @GetMapping("/deleteCoach/{id}")
+    @PostMapping("/edit")
+    public ModelAndView edit(@ModelAttribute("coach") Coach coach) {
+        Coach realCoach = iCoachService.findById(coach.getId()).get();
+        realCoach.setName(coach.getName());
+        realCoach.setAge(coach.getAge());
+        realCoach.setHometown(coach.getHometown());
+        realCoach.setSalary(coach.getSalary());
+        iCoachService.save(realCoach);
+        return new ModelAndView("redirect:/c/profile/" + coach.getId());
+    }
+
+    @GetMapping("/delete/{id}")
     public ModelAndView showDelete(@PathVariable long id) {
         Optional<Coach> coach = iCoachService.findById(id);
         if (coach.isPresent()) {
@@ -57,34 +73,30 @@ public class CoachController {
             modelAndView.addObject("coach", coach.get());
             return modelAndView;
         } else {
-            return new ModelAndView("/error.404");
+            return new ModelAndView("/focus-2/page-error-404");
         }
     }
 
-    @PostMapping("/createCoach")
+    @PostMapping("/delete")
+    public ModelAndView delete(@RequestParam Long id) {
+        Coach coach = iCoachService.findById(id).get();
+        MyUser user = iMyUserService.findByEmail(coach.getEmail());
+        weeklySalaryService.deleteAllByCoach_Id(coach.getId());
+        iCoachService.delete(id);
+        iMyUserService.delete(user.getId());
+        return new ModelAndView("redirect:/c/show");
+    }
+
+    @PostMapping("/create")
     public ModelAndView createCoach(@RequestAttribute MultipartFile file, @ModelAttribute("coach") Coach coach) throws IOException {
         String fileName = file.getOriginalFilename();
         FileCopyUtils.copy(file.getBytes(), new File(uploadPart, fileName));
         coach.setAvatar(fileName);
         coach = (Coach) iCoachService.saveObj(coach);
-        return new ModelAndView("redirect:/c/coachProfile/" + coach.getId());
+        return new ModelAndView("redirect:/c/profile/" + coach.getId());
     }
 
-
-    @PostMapping("/editCoach/{id}")
-    public ModelAndView edit(@ModelAttribute("coach") Coach coach) {
-        iCoachService.save(coach);
-        return new ModelAndView("redirect:/c/coachProfile/" + coach.getId());
-    }
-
-
-    @PostMapping("/deleteCoach/{id}")
-    public ModelAndView delete(@ModelAttribute("coach") Coach coach) {
-        iCoachService.delete(coach.getId());
-        return new ModelAndView("redirect:/c/coach/show");
-    }
-
-    @GetMapping("/changeCoachAvatar/{id}")
+    @GetMapping("/changeAvatar/{id}")
     public ModelAndView showChangeCoachAvatar(@PathVariable long id) {
         Optional<Coach> coach = iCoachService.findById(id);
         if (coach.isPresent()) {
@@ -92,24 +104,33 @@ public class CoachController {
             modelAndView.addObject("coach", coach.get());
             return modelAndView;
         } else {
-            return new ModelAndView("/error.404");
+            return new ModelAndView("/focus-2/page-error-404");
         }
     }
 
-    @PostMapping("/changeCoachAvatar")
+    @PostMapping("/changeAvatar")
     public ModelAndView changeCoachAvatar(@RequestAttribute MultipartFile file, @ModelAttribute("coach") Coach coach) throws IOException {
         coach = iCoachService.findById(coach.getId()).get();
         String fileName = file.getOriginalFilename();
         FileCopyUtils.copy(file.getBytes(), new File(uploadPart, fileName));
         coach.setAvatar(fileName);
         iCoachService.save(coach);
-        return new ModelAndView("redirect:/c/coachProfile/" + coach.getId());
+        return new ModelAndView("redirect:/c/profile/" + coach.getId());
     }
 
-    @GetMapping("/coachProfile/{id}")
-    public ModelAndView coachProfile(@PathVariable long id){
+    @GetMapping("/profile/{id}")
+    public ModelAndView coachProfile(@PathVariable long id) {
         Optional<Coach> coach = iCoachService.findById(id);
         ModelAndView modelAndView = new ModelAndView("/coach/coachDetail");
+        Map<String, Long> data = new LinkedHashMap<>();
+        List<WeeklySalary> weeklySalaryList = (List<WeeklySalary>) weeklySalaryService.findByCoach_Id(id);
+        if (weeklySalaryList != null) {
+            for (WeeklySalary weeklySalary : weeklySalaryList) {
+                data.put(String.valueOf(weeklySalary.getDate()), weeklySalary.getTotalSalary());
+            }
+        }
+        modelAndView.addObject("keySet", data.keySet());
+        modelAndView.addObject("values", data.values());
         modelAndView.addObject("coach", coach.get());
         return modelAndView;
     }

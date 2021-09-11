@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="home :: links">
     <meta charset="UTF-8">
     <title>Title</title>
@@ -22,14 +22,15 @@
                             <table class="table mb-6" th:object="${coach}">
                                 <tr>
                                     <td>
-                                        <a th:href="@{/c/changeCoachAvatar/{id}(id=${coach.id})}" class="btn btn-primary">
+                                        <a sec:authorize="hasRole('ROLE_ADMIN')"
+                                           th:href="@{/c/changeAvatar/{id}(id=${coach.id})}" class="btn btn-primary">
                                             Change Avatar</a>
                                     </td>
                                     <td>
                                         <div class="round-img">
-                                            <a th:href="@{/c/changeCoachAvatar/{id}(id=${coach.id})}"><img width="300"
-                                                                                                         th:src="@{'/'+${coach.avatar}}"
-                                                                                                         alt=""></a>
+                                            <img width="300"
+                                                 th:src="@{'/'+${coach.avatar}}"
+                                                 alt="">
                                         </div>
                                     </td>
                                 </tr>
@@ -56,7 +57,8 @@
                                 <tr>
                                     <th>Weekly Salary</th>
                                     <td th:switch="${coach.weeklySalary!=null}">
-                                        <span th:case="${true}" th:text="${coach.weeklySalary.totalSalary+ ' vnd'}"></span>
+                                        <span th:case="${true}"
+                                              th:text="${coach.weeklySalary.totalSalary+ ' vnd'}"></span>
                                         <span th:case="*">0 vnd</span>
                                     </td>
                                 </tr>
@@ -66,7 +68,59 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <h2 align="center">Salary </h2>
+                    <div id="chart" style="width: 550px; height: 400px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script th:inline="javascript">
+        $(function () {
+            Highcharts.chart('chart', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Salary Chart'
+                },
+                subtitle: {
+                    text: 'Weekly'
+                },
+                xAxis: {
+                    categories: [[${keySet}]],
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    max: 5000000,
+                    title: {
+                        text: 'Salary'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">Date: {point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'VND:',
+                    data: [[${values}]]
+                }]
+            });
+        });
+    </script>
     <div th:replace="home :: footer"></div>
 </div>
 <!--**********************************

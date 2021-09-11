@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,17 +48,27 @@ public class WeeklySalaryService implements IWeeklySalaryService {
     }
 
     @Override
+    public void deleteAllByCoach_Id(long id) {
+        weeklySalaryRepository.deleteAllByCoach_Id(id);
+    }
+
+    @Override
+    public void deleteAllByPlayer_Id(long id) {
+        weeklySalaryRepository.deleteAllByPlayer_Id(id);
+    }
+
+    @Override
     public void delete(Long id) {
         weeklySalaryRepository.deleteById(id);
     }
 
     @Override
-    public WeeklySalary findByCoach_Id(Long id) {
+    public List<WeeklySalary> findByCoach_Id(Long id) {
         return weeklySalaryRepository.findByCoach_Id(id);
     }
 
     @Override
-    public WeeklySalary findByPlayer_Id(Long id) {
+    public List<WeeklySalary> findByPlayer_Id(Long id) {
         return weeklySalaryRepository.findByPlayer_Id(id);
     }
 }

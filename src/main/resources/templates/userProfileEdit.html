@@ -19,7 +19,7 @@
           </div>
           <div class="card-body">
             <div class="basic-form">
-              <form th:action="@{/u/createUserProfile}" th:object="${user}" method="post">
+              <form th:action="@{/u/editMyProfile}" th:object="${user}" method="post">
                 <div class="form-group row">
                   <div class="col-sm-10">
                     <input type="email" class="form-control" th:field="*{email}" hidden>

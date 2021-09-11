@@ -19,7 +19,7 @@
                     </div>
                     <div class="card-body">
                         <div class="basic-form">
-                            <form th:action="@{/p/editPlayer}" method="post" enctype="multipart/form-data"
+                            <form th:action="@{/p/edit}" method="post" enctype="multipart/form-data"
                                   th:object="${player}">
                                 <input type="hidden" th:field="*{id}">
                                 <div class="form-row">
