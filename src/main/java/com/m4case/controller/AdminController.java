@@ -143,14 +143,14 @@ public class AdminController {
     }
 
     @GetMapping("/showCoach")
-    public ModelAndView finAll() {
+    public ModelAndView findAllCoach() {
         ModelAndView modelAndView = new ModelAndView("/coach/showCoach");
         modelAndView.addObject("coaches", coachService.findAll());
         return modelAndView;
     }
 
     @GetMapping("/showPlayer")
-    public ModelAndView findAll() {
+    public ModelAndView findAllPlayer() {
         ModelAndView modelAndView = new ModelAndView("/players/listPlayer");
         modelAndView.addObject("players", playerService.findAll());
         return modelAndView;

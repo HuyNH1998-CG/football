@@ -4,6 +4,7 @@ import com.m4case.model.WeeklySalary;
 import com.m4case.repository.IWeeklySalaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
@@ -48,11 +49,13 @@ public class WeeklySalaryService implements IWeeklySalaryService {
     }
 
     @Override
+    @Transactional
     public void deleteAllByCoach_Id(long id) {
         weeklySalaryRepository.deleteAllByCoach_Id(id);
     }
 
     @Override
+    @Transactional
     public void deleteAllByPlayer_Id(long id) {
         weeklySalaryRepository.deleteAllByPlayer_Id(id);
     }

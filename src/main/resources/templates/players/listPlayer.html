@@ -69,10 +69,10 @@
                                         <span th:case="*">Unknown</span>
                                     </td>
                                     <td>
-                                        <a th:href="@{/p/edit/{id}(id=${player.id})}">Update</a>
+                                        <a th:href="@{/p/edit/{id}(id=${player.id})}" class="btn btn-danger">Update</a>
                                     </td>
                                     <td>
-                                        <a th:href="@{/p/delete/{id}(id=${player.id})}">Fire</a>
+                                        <a th:href="@{/p/delete/{id}(id=${player.id})}" class="btn btn-primary">Fire</a>
                                     </td>
                                 </tr>
 

@@ -84,7 +84,7 @@ public class CoachController {
         weeklySalaryService.deleteAllByCoach_Id(coach.getId());
         iCoachService.delete(id);
         iMyUserService.delete(user.getId());
-        return new ModelAndView("redirect:/c/show");
+        return new ModelAndView("redirect:/a/coachList");
     }
 
     @PostMapping("/create")

@@ -117,10 +117,10 @@ public class PlayerController {
     public ModelAndView delete(@RequestParam long id) {
         Player coach = playerService.findById(id).get();
         MyUser user = userService.findByEmail(coach.getEmail());
-        weeklySalaryService.deleteAllByCoach_Id(coach.getId());
+        weeklySalaryService.deleteAllByPlayer_Id(coach.getId());
         playerService.delete(id);
         userService.delete(user.getId());
-        return new ModelAndView("redirect:/p/show");
+        return new ModelAndView("redirect:/a/playerList");
     }
 
     @PostMapping("/create")
