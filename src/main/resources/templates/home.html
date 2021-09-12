@@ -244,17 +244,17 @@
                                         </td>
                                         <td th:switch="${player.position!=null}">
                                             <span th:case="${true}"
-                                                  th:text="${player.position.name}+ ' vnd'"></span>
+                                                  th:text="${player.position.name}"></span>
                                             <span th:case="*">Unknown</span>
                                         </td>
                                         <td th:switch="${player.hype!=null}">
                                             <span th:case="${true}"
-                                                  th:text="${player.hype.name}+ ' vnd'"></span>
+                                                  th:text="${player.hype.name}"></span>
                                             <span th:case="*">Unknown</span>
                                         </td>
                                         <td th:switch="${player.status!=null}">
                                             <span th:case="${true}"
-                                                  th:text="${player.status.name}+ ' vnd'"></span>
+                                                  th:text="${player.status.name}"></span>
                                             <span th:case="*">Unknown</span>
                                         </td>
                                         <th sec:authorize="${hasAnyRole('ROLE_ADMIN','ROLE_COACH')}">

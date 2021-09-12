@@ -97,7 +97,7 @@ public class PlayerController {
         realPlayer.setHype(player.getHype());
         realPlayer.setStatus(player.getStatus());
         playerService.save(realPlayer);
-        return new ModelAndView("redirect:/p/show");
+        return new ModelAndView("redirect:/u/home");
     }
 
 

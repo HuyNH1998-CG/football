@@ -151,13 +151,13 @@ public class UserController {
             if (coach == null) {
                 return new ModelAndView("redirect:/u/profileNotFound");
             }
-            return new ModelAndView("redirect:/c/coachProfile/" + coach.getId());
+            return new ModelAndView("redirect:/c/profile/" + coach.getId());
         } else {
             Player player = playerService.findByEmail(authentication.getName());
             if (player == null) {
                 return new ModelAndView("redirect:/u/profileNotFound");
             }
-            return new ModelAndView("redirect:/p/playerProfile/" + player.getId());
+            return new ModelAndView("redirect:/p/profile/" + player.getId());
         }
     }
 
@@ -191,9 +191,9 @@ public class UserController {
     public ModelAndView editWorkProfile(Authentication authentication) {
         MyUser myUser = userService.findByEmail(authentication.getName());
         if (myUser.getRole().getName().equals("ROLE_COACH")) {
-            return new ModelAndView("redirect:/c/editCoach/" + coachService.findByEmail(myUser.getEmail()).getId());
+            return new ModelAndView("redirect:/c/edit/" + coachService.findByEmail(myUser.getEmail()).getId());
         } else {
-            return new ModelAndView("redirect:/p/editplayer/" + playerService.findByEmail(myUser.getEmail()).getId());
+            return new ModelAndView("redirect:/p/edit/" + playerService.findByEmail(myUser.getEmail()).getId());
         }
     }
 
