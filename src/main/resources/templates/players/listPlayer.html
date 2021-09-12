@@ -47,10 +47,10 @@
                                     <td th:text="${player.name}"></td>
                                     <td th:text="${player.birthday}"></td>
                                     <td th:text="${player.hometown}"></td>
-                                    <td th:text="${player.salary} + ' vnd'"></td>
+                                    <td th:text="${player.salary}+ ' VND'"></td>
                                     <td th:switch="${player.weeklySalary!=null}">
                                             <span th:case="${true}"
-                                                  th:text="${player.weeklySalary.totalSalary}+ ' vnd'"></span>
+                                                  th:text="${player.weeklySalary.totalSalary}+ ' VND'"></span>
                                         <span th:case="*">0 VND</span>
                                     </td>
                                     <td th:switch="${player.position!=null}">
