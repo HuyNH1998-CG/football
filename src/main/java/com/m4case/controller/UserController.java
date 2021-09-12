@@ -199,10 +199,15 @@ public class UserController {
 
     @GetMapping("/editMyProfile")
     public ModelAndView editProfileForm(Authentication authentication) {
-        ModelAndView modelAndView = new ModelAndView("/userProfileEdit");
-        modelAndView.addObject("user", userService.findByEmail(authentication.getName()));
-        modelAndView.addObject("genders", genderService.findAll());
-        return modelAndView;
+        MyUser user = userService.findByEmail(authentication.getName());
+        if(user.getGender()!=null){
+            ModelAndView modelAndView = new ModelAndView("/userProfileEdit");
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("genders", genderService.findAll());
+            return modelAndView;
+        } else {
+            return new ModelAndView("redirect:/u/createUserProfile");
+        }
     }
 
     @PostMapping("/editMyProfile")
