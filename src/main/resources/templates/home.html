@@ -228,7 +228,7 @@
                                     <tr th:each="player : ${players}">
                                         <td>
                                             <div class="round-img">
-                                                <a th:href="@{/p/profile/{id}(id=${player.id})}"><img width="200"
+                                                <a th:href="@{/p/profile/{id}(id=${player.id})}"><img height="200" width="200"
                                                                                                       th:src="@{'/' + ${player.avatar}}"
                                                                                                       alt=""></a>
                                             </div>
@@ -292,7 +292,7 @@
                                     <tr th:each="coach : ${coaches}">
                                         <td>
                                             <div class="round-img">
-                                                <a th:href="@{/c/profile/{id}(id=${coach.id})}"><img width="200"
+                                                <a th:href="@{/c/profile/{id}(id=${coach.id})}"><img height="200" width="200"
                                                                                                      th:src="@{'/' + ${coach.avatar}}"
                                                                                                      alt=""></a>
                                             </div>

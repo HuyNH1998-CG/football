@@ -33,7 +33,7 @@
                 <tr th:each="player : ${players}">
                   <td>
                     <div class="round-img">
-                      <a th:href="@{/a/playerSalary/{id}(id=${player.id})}"><img width="200" th:src="@{'/'+${player.avatar}}" alt=""></a>
+                      <a th:href="@{/a/playerSalary/{id}(id=${player.id})}"><img height="200" width="200" th:src="@{'/'+${player.avatar}}" alt=""></a>
                     </div>
                   </td>
                   <td th:text="${player.name}"></td>
