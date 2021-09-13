@@ -20,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/").authenticated()
                 .and().authorizeRequests().antMatchers("/u/**").hasAnyAuthority("ROLE_COACH", "ROLE_ADMIN","ROLE_PLAYER")
-                .and().authorizeRequests().antMatchers("/c/**").hasAnyAuthority("ROLE_COACH","ROLE_ADMIN")
+                .and().authorizeRequests().antMatchers("/c/**").hasAnyAuthority("ROLE_COACH","ROLE_ADMIN","ROLE_PLAYER")
                 .and().authorizeRequests().antMatchers("/p/**").hasAnyAuthority("ROLE_COACH", "ROLE_ADMIN","ROLE_PLAYER")
                 .and().authorizeRequests().antMatchers("/a/**").hasAuthority("ROLE_ADMIN")
                 .and()
